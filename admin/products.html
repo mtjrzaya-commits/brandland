@@ -1,1 +1,235 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المنتجات | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html" class="active"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">➕ إدارة المنتجات</span>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon" onclick="location.href='settings.html'">⚙️</button>
+      </div>
+    </div>
+
+    <div class="page-title">
+      <h1>📦 المنتجات</h1>
+      <button class="btn btn-gold" onclick="openProductModal()">
+        ➕ إضافة منتج
+      </button>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث عن منتج...">
+      </div>
+    </div>
+
+    <div id="productsList"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html" class="active"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <h2 id="modalTitle">➕ إضافة منتج جديد</h2>
+    <form id="productForm">
+      <input type="hidden" id="productId">
+      <div class="form-group">
+        <label>📝 اسم المنتج *</label>
+        <input type="text" id="productName" required placeholder="مثال: لعبة الحقيقة والجرأة">
+      </div>
+      <div class="form-group">
+        <label>💰 السعر (ر.س) *</label>
+        <input type="number" id="productPrice" required placeholder="109" min="0" step="0.01">
+      </div>
+      <div class="form-group">
+        <label>🖼️ رابط الصورة</label>
+        <input type="url" id="productImage" placeholder="https://example.com/image.jpg">
+      </div>
+      <div class="form-group">
+        <label>📂 القسم</label>
+        <select id="productCategory">
+          <option value="">-- اختر القسم --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>📄 الوصف</label>
+        <textarea id="productDescription" placeholder="وصف مختصر للمنتج..."></textarea>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="closeProductModal()">إلغاء</button>
+        <button type="submit" class="btn btn-gold">💾 حفظ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  renderProducts();
+  fillCategoriesSelect();
+  document.getElementById('searchInput').addEventListener('input', renderProducts);
+  document.getElementById('productForm').addEventListener('submit', handleProductSubmit);
+});
+
+function fillCategoriesSelect(){
+  const select = document.getElementById('productCategory');
+  const categories = getCategories();
+  categories.forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = cat.name;
+    select.appendChild(opt);
+  });
+}
+
+function renderProducts(){
+  const products = getProducts();
+  const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase();
+  const filtered = products.filter(p => !searchTerm || p.name.toLowerCase().includes(searchTerm));
+  const container = document.getElementById('productsList');
+  
+  if(filtered.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="icon">📦</span>
+        <h3>${products.length === 0 ? 'لا توجد منتجات بعد' : 'لا توجد نتائج'}</h3>
+        <p>${products.length === 0 ? 'ابدأ بإضافة أول منتج' : 'حاول البحث باسم آخر'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>الصورة</th>
+            <th>الاسم</th>
+            <th>السعر</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filtered.map(p => `
+            <tr>
+              <td>
+                <img src="${p.image || 'https://via.placeholder.com/50x50/D4AF37/000000?text=P'}" 
+                     onerror="this.src='https://via.placeholder.com/50x50/D4AF37/000000?text=P'">
+              </td>
+              <td>${escapeHtml(p.name)}</td>
+              <td style="color:var(--gold);font-weight:700;">${formatPrice(p.price)}</td>
+              <td>
+                <div class="actions">
+                  <button class="btn-icon edit" onclick="editProduct(${p.id})">✏️</button>
+                  <button class="btn-icon danger" onclick="removeProduct(${p.id})">🗑️</button>
+                </div>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+function openProductModal(){
+  document.getElementById('productForm').reset();
+  document.getElementById('productId').value = '';
+  document.getElementById('modalTitle').textContent = '➕ إضافة منتج جديد';
+  document.getElementById('productModal').classList.add('show');
+}
+
+function editProduct(id){
+  const product = getProducts().find(p => p.id === id);
+  if(!product) return;
+  document.getElementById('productId').value = product.id;
+  document.getElementById('productName').value = product.name;
+  document.getElementById('productPrice').value = product.price;
+  document.getElementById('productImage').value = product.image || '';
+  document.getElementById('productCategory').value = product.category || '';
+  document.getElementById('productDescription').value = product.description || '';
+  document.getElementById('modalTitle').textContent = '✏️ تعديل المنتج';
+  document.getElementById('productModal').classList.add('show');
+}
+
+function closeProductModal(){
+  document.getElementById('productModal').classList.remove('show');
+}
+
+function handleProductSubmit(e){
+  e.preventDefault();
+  const id = document.getElementById('productId').value;
+  const data = {
+    name: document.getElementById('productName').value.trim(),
+    price: parseFloat(document.getElementById('productPrice').value),
+    image: document.getElementById('productImage').value.trim(),
+    category: document.getElementById('productCategory').value,
+    description: document.getElementById('productDescription').value.trim()
+  };
+  if(id){
+    updateProduct(parseInt(id), data);
+  } else {
+    addProduct(data);
+  }
+  closeProductModal();
+  renderProducts();
+}
+
+function removeProduct(id){
+  if(deleteProduct(id)){
+    renderProducts();
+  }
+}
+</script>
+
+</body>
+</html>

@@ -1,1 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الطلبات | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html" class="active"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">📦 إدارة الطلبات</span>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon" onclick="location.href='settings.html'">⚙️</button>
+      </div>
+    </div>
+
+    <h1 class="page-title">📦 الطلبات</h1>
+
+    <div class="toolbar">
+      <button class="btn btn-sm btn-gold filter-btn" data-filter="all">الكل</button>
+      <button class="btn btn-sm btn-outline filter-btn" data-filter="new">🟡 جديد</button>
+      <button class="btn btn-sm btn-outline filter-btn" data-filter="processing">🔄 قيد المعالجة</button>
+      <button class="btn btn-sm btn-outline filter-btn" data-filter="completed">✅ مكتمل</button>
+      <button class="btn btn-sm btn-outline filter-btn" data-filter="cancelled">❌ ملغي</button>
+    </div>
+
+    <div id="ordersList"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html" class="active"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="modal-overlay" id="orderModal">
+  <div class="modal">
+    <h2>📋 تفاصيل الطلب</h2>
+    <div id="orderDetails"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+let currentFilter = 'all';
+
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  renderOrders();
+  
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.filter-btn').forEach(b => {
+        b.classList.remove('btn-gold');
+        b.classList.add('btn-outline');
+      });
+      this.classList.remove('btn-outline');
+      this.classList.add('btn-gold');
+      currentFilter = this.dataset.filter;
+      renderOrders();
+    });
+  });
+});
+
+function renderOrders(){
+  let orders = getOrders();
+  
+  if(currentFilter !== 'all'){
+    orders = orders.filter(o => (o.status || 'new') === currentFilter);
+  }
+  
+  orders = orders.reverse();
+  const container = document.getElementById('ordersList');
+  
+  if(orders.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="icon">📋</span>
+        <h3>لا توجد طلبات</h3>
+        <p>${currentFilter === 'all' ? 'ستظهر الطلبات هنا عند وصولها' : 'لا توجد طلبات بهذه الحالة'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = orders.map(order => `
+    <div class="order-card">
+      <div class="order-header">
+        <span class="order-number">#${order.orderNumber || order.id}</span>
+        <span class="order-status status-${order.status || 'new'}">
+          ${getStatusLabel(order.status)}
+        </span>
+      </div>
+      <div class="order-info">
+        <div>👤 <strong>${escapeHtml(order.customerName || 'عميل')}</strong></div>
+        <div>📞 <strong>${escapeHtml(order.customerPhone || '-')}</strong></div>
+        <div>📍 <strong>${escapeHtml(order.city || '-')}</strong></div>
+        <div>📅 <strong>${formatDate(order.date)}</strong></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;">
+        <div class="order-total">${formatPrice(order.total || 0)}</div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-icon" onclick="viewOrder(${order.id})">👁️</button>
+          <button class="btn-icon danger" onclick="removeOrder(${order.id})">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function getStatusLabel(status){
+  const labels = {
+    'new': '🟡 جديد',
+    'processing': '🔄 قيد المعالجة',
+    'completed': '✅ مكتمل',
+    'cancelled': '❌ ملغي'
+  };
+  return labels[status] || labels['new'];
+}
+
+function viewOrder(id){
+  const order = getOrders().find(o => o.id === id);
+  if(!order) return;
+
+  const items = order.items || order.cart || [];
+  
+  document.getElementById('orderDetails').innerHTML = `
+    <div style="margin-bottom:20px;">
+      <p style="color:var(--muted);font-size:12px;">رقم الطلب</p>
+      <p style="color:var(--gold);font-weight:900;font-size:18px;">#${order.orderNumber || order.id}</p>
+    </div>
+
+    <div style="background:var(--black);padding:15px;border-radius:10px;margin-bottom:15px;">
+      <h3 style="color:var(--gold);font-size:14px;margin-bottom:10px;">👤 معلومات العميل</h3>
+      <p>الاسم: <strong>${escapeHtml(order.customerName || '-')}</strong></p>
+      <p>الجوال: <strong>${escapeHtml(order.customerPhone || '-')}</strong></p>
+      <p>المدينة: <strong>${escapeHtml(order.city || '-')}</strong></p>
+      <p>العنوان: <strong>${escapeHtml(order.address || '-')}</strong></p>
+    </div>
+
+    <div style="background:var(--black);padding:15px;border-radius:10px;margin-bottom:15px;">
+      <h3 style="color:var(--gold);font-size:14px;margin-bottom:10px;">🛍️ المنتجات</h3>
+      ${items.length > 0 ? items.map(item => `
+        <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:13px;">
+          <span>${escapeHtml(item.name)} × ${item.qty || 1}</span>
+          <span style="color:var(--gold);">${formatPrice((item.price || 0) * (item.qty || 1))}</span>
+        </div>
+      `).join('') : '<p style="color:var(--muted);">لا توجد تفاصيل</p>'}
+      <div style="border-top:1px solid var(--border);margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;">
+        <strong>المجموع</strong>
+        <strong style="color:var(--gold);">${formatPrice(order.total || 0)}</strong>
+      </div>
+    </div>
+
+    <div style="background:var(--black);padding:15px;border-radius:10px;margin-bottom:15px;">
+      <h3 style="color:var(--gold);font-size:14px;margin-bottom:10px;">🔄 تغيير الحالة</h3>
+      <select id="statusSelect" style="width:100%;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text);">
+        <option value="new" ${order.status === 'new' ? 'selected' : ''}>🟡 جديد</option>
+        <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>🔄 قيد المعالجة</option>
+        <option value="completed" ${order.status === 'completed' ? 'selected' : ''}>✅ مكتمل</option>
+        <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>❌ ملغي</option>
+      </select>
+      <button class="btn btn-gold" style="width:100%;margin-top:10px;" onclick="updateStatus(${order.id})">
+        💾 تحديث الحالة
+      </button>
+    </div>
+
+    <button class="btn btn-outline" style="width:100%;" onclick="closeOrderModal()">إغلاق</button>
+  `;
+
+  document.getElementById('orderModal').classList.add('show');
+}
+
+function updateStatus(id){
+  const status = document.getElementById('statusSelect').value;
+  if(updateOrderStatus(id, status)){
+    closeOrderModal();
+    renderOrders();
+  }
+}
+
+function closeOrderModal(){
+  document.getElementById('orderModal').classList.remove('show');
+}
+
+function removeOrder(id){
+  if(deleteOrder(id)){
+    renderOrders();
+  }
+}
+</script>
+
+</body>
+</html>

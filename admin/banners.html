@@ -1,1 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>البانرات | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html" class="active"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">🖼️ إدارة البانرات</span>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon" onclick="location.href='settings.html'">⚙️</button>
+      </div>
+    </div>
+
+    <div class="page-title">
+      <h1>🖼️ البانرات</h1>
+      <button class="btn btn-gold" onclick="openBannerModal()">
+        ➕ إضافة بانر
+      </button>
+    </div>
+
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">
+      💡 البانر هو الصورة الكبيرة التي تظهر في أعلى الصفحة الرئيسية للمتجر
+    </p>
+
+    <div id="bannersList"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="modal-overlay" id="bannerModal">
+  <div class="modal">
+    <h2 id="modalTitle">➕ إضافة بانر جديد</h2>
+    <form id="bannerForm">
+      <input type="hidden" id="bannerId">
+      <div class="form-group">
+        <label>📝 العنوان الرئيسي *</label>
+        <input type="text" id="bannerTitle" required placeholder="ألعاب زوجية">
+      </div>
+      <div class="form-group">
+        <label>📝 الوصف الفرعي</label>
+        <input type="text" id="bannerSubtitle" placeholder="لأن المتعة أجمل معاً">
+      </div>
+      <div class="form-group">
+        <label>📝 النص الإنجليزي (اختياري)</label>
+        <input type="text" id="bannerEnglish" placeholder="COUPLES GAMES">
+      </div>
+      <div class="form-group">
+        <label>🖼️ رابط الصورة *</label>
+        <input type="url" id="bannerImage" required placeholder="https://example.com/banner.jpg">
+      </div>
+      <div class="form-group">
+        <label>🔗 رابط الزر (اختياري)</label>
+        <input type="text" id="bannerLink" placeholder="categories.html">
+      </div>
+      <div class="form-group">
+        <label>📝 نص الزر (اختياري)</label>
+        <input type="text" id="bannerButtonText" placeholder="تسوق الآن">
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="bannerActive" checked style="width:auto;margin-left:8px;">
+          ✅ مفعّل (يظهر في المتجر)
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="closeBannerModal()">إلغاء</button>
+        <button type="submit" class="btn btn-gold">💾 حفظ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  renderBanners();
+  document.getElementById('bannerForm').addEventListener('submit', handleBannerSubmit);
+});
+
+function renderBanners(){
+  const banners = getBanners();
+  const container = document.getElementById('bannersList');
+  
+  if(banners.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="icon">🖼️</span>
+        <h3>لا توجد بانرات بعد</h3>
+        <p>أضف بانراً ليظهر في أعلى الصفحة الرئيسية</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = banners.map(banner => `
+    <div class="card" style="margin-bottom:15px;">
+      <img class="card-image" src="${banner.image}" style="height:150px;"
+           onerror="this.src='https://via.placeholder.com/600x200/D4AF37/000000?text=Banner'">
+      <div class="card-body">
+        <div class="card-title">${escapeHtml(banner.title)}</div>
+        <div class="card-meta">${escapeHtml(banner.subtitle || '')} ${banner.active === false ? ' • ⚠️ مخفي' : ''}</div>
+        <div class="card-actions">
+          <button class="btn-icon edit" onclick="editBanner(${banner.id})">✏️</button>
+          <button class="btn-icon danger" onclick="removeBanner(${banner.id})">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openBannerModal(){
+  document.getElementById('bannerForm').reset();
+  document.getElementById('bannerId').value = '';
+  document.getElementById('bannerActive').checked = true;
+  document.getElementById('modalTitle').textContent = '➕ إضافة بانر جديد';
+  document.getElementById('bannerModal').classList.add('show');
+}
+
+function editBanner(id){
+  const banner = getBanners().find(b => b.id === id);
+  if(!banner) return;
+  document.getElementById('bannerId').value = banner.id;
+  document.getElementById('bannerTitle').value = banner.title;
+  document.getElementById('bannerSubtitle').value = banner.subtitle || '';
+  document.getElementById('bannerEnglish').value = banner.english || '';
+  document.getElementById('bannerImage').value = banner.image;
+  document.getElementById('bannerLink').value = banner.link || '';
+  document.getElementById('bannerButtonText').value = banner.buttonText || '';
+  document.getElementById('bannerActive').checked = banner.active !== false;
+  document.getElementById('modalTitle').textContent = '✏️ تعديل البانر';
+  document.getElementById('bannerModal').classList.add('show');
+}
+
+function closeBannerModal(){
+  document.getElementById('bannerModal').classList.remove('show');
+}
+
+function handleBannerSubmit(e){
+  e.preventDefault();
+  const id = document.getElementById('bannerId').value;
+  const data = {
+    title: document.getElementById('bannerTitle').value.trim(),
+    subtitle: document.getElementById('bannerSubtitle').value.trim(),
+    english: document.getElementById('bannerEnglish').value.trim(),
+    image: document.getElementById('bannerImage').value.trim(),
+    link: document.getElementById('bannerLink').value.trim(),
+    buttonText: document.getElementById('bannerButtonText').value.trim(),
+    active: document.getElementById('bannerActive').checked
+  };
+  if(id){
+    updateBanner(parseInt(id), data);
+  } else {
+    addBanner(data);
+  }
+  closeBannerModal();
+  renderBanners();
+}
+
+function removeBanner(id){
+  if(deleteBanner(id)){
+    renderBanners();
+  }
+}
+</script>
+
+</body>
+  </html>

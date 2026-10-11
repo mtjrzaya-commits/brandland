@@ -57,13 +57,24 @@
         <div class="form-group">
           <label>📧 البريد الإلكتروني</label>
           <input type="email" id="storeEmail" placeholder="mtjrzaya@gmail.com">
+          <small style="color:var(--muted);font-size:11px;display:block;margin-top:5px;">
+            💡 يصلك إشعار بكل طلب جديد على هذا البريد
+          </small>
         </div>
 
         <div class="form-group">
-          <label>📱 رقم الجوال / واتساب</label>
+          <label>📱 رقم الجوال</label>
           <input type="tel" id="storePhone" placeholder="+966507000000">
           <small style="color:var(--muted);font-size:11px;display:block;margin-top:5px;">
-            💡 هذا الرقم يظهر في المتجر + يُستخدم للتواصل
+            💡 يظهر في المتجر + يُستخدم للتواصل
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>💬 رقم واتساب الطلبات *</label>
+          <input type="tel" id="whatsapp" placeholder="+966507000000">
+          <small style="color:var(--muted);font-size:11px;display:block;margin-top:5px;">
+            💡 يصل عليه كل طلب جديد (بصيغة دولية تبدأ بـ +)
           </small>
         </div>
 
@@ -77,11 +88,6 @@
         <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">📱 وسائل التواصل</h2>
         
         <div class="form-group">
-          <label>💬 رقم واتساب</label>
-          <input type="tel" id="whatsapp" placeholder="+966507000000">
-        </div>
-
-        <div class="form-group">
           <label>📷 إنستقرام</label>
           <input type="text" id="instagram" placeholder="brandland">
         </div>
@@ -90,18 +96,23 @@
           <label>🐦 تويتر / X</label>
           <input type="text" id="twitter" placeholder="brandland">
         </div>
+
+        <div class="form-group">
+          <label>📱 تيك توك</label>
+          <input type="text" id="tiktok" placeholder="brandland">
+        </div>
       </div>
 
       <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;">
         <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">🚚 إعدادات الشحن</h2>
         
         <div class="form-group">
-          <label>💰 تكلفة الشحن (ر.س)</label>
+          <label>💰 تكلفة الشحن (SAR)</label>
           <input type="number" id="shippingCost" placeholder="25" min="0">
         </div>
 
         <div class="form-group">
-          <label>🎁 شحن مجاني للطلبات فوق (ر.س)</label>
+          <label>🎁 شحن مجاني للطلبات فوق (SAR)</label>
           <input type="number" id="freeShippingMin" placeholder="500" min="0">
         </div>
       </div>
@@ -116,7 +127,7 @@
       <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">💾 البيانات والنسخ الاحتياطي</h2>
       
       <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
-        احتفظ بنسخة احتياطية من بيانات متجرك (المنتجات، الأقسام، الطلبات، الإعدادات)
+        احتفظ بنسخة احتياطية من بيانات متجرك
       </p>
 
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
@@ -160,10 +171,11 @@ function loadSettings(){
   document.getElementById('storeName').value = settings.storeName || '';
   document.getElementById('storeEmail').value = settings.storeEmail || '';
   document.getElementById('storePhone').value = settings.storePhone || '';
-  document.getElementById('storeAddress').value = settings.storeAddress || '';
   document.getElementById('whatsapp').value = settings.whatsapp || '';
+  document.getElementById('storeAddress').value = settings.storeAddress || '';
   document.getElementById('instagram').value = settings.instagram || '';
   document.getElementById('twitter').value = settings.twitter || '';
+  document.getElementById('tiktok').value = settings.tiktok || '';
   document.getElementById('shippingCost').value = settings.shippingCost || 25;
   document.getElementById('freeShippingMin').value = settings.freeShippingMin || 500;
 }
@@ -175,10 +187,11 @@ function handleSettingsSubmit(e){
     storeName: document.getElementById('storeName').value.trim(),
     storeEmail: document.getElementById('storeEmail').value.trim(),
     storePhone: document.getElementById('storePhone').value.trim(),
-    storeAddress: document.getElementById('storeAddress').value.trim(),
     whatsapp: document.getElementById('whatsapp').value.trim(),
+    storeAddress: document.getElementById('storeAddress').value.trim(),
     instagram: document.getElementById('instagram').value.trim(),
     twitter: document.getElementById('twitter').value.trim(),
+    tiktok: document.getElementById('tiktok').value.trim(),
     shippingCost: parseFloat(document.getElementById('shippingCost').value) || 0,
     freeShippingMin: parseFloat(document.getElementById('freeShippingMin').value) || 0
   };
@@ -215,7 +228,6 @@ function importData(event){
   reader.onload = function(e){
     try {
       const data = JSON.parse(e.target.result);
-      
       if(!confirm('سيتم استبدال البيانات الحالية. هل تريد المتابعة؟')) return;
 
       if(data.products) saveProducts(data.products);
@@ -249,4 +261,4 @@ function resetAllData(){
 </script>
 
 </body>
-  </html>
+</html>

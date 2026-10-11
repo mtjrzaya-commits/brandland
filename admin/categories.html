@@ -1,1 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسام | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html" class="active"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">🏷️ إدارة الأقسام</span>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon" onclick="location.href='settings.html'">⚙️</button>
+      </div>
+    </div>
+
+    <div class="page-title">
+      <h1>🏷️ الأقسام</h1>
+      <button class="btn btn-gold" onclick="openCategoryModal()">
+        ➕ إضافة قسم
+      </button>
+    </div>
+
+    <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">
+      💡 الأقسام تظهر في الصفحة الرئيسية للمتجر وفي القائمة الجانبية
+    </p>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث في الأقسام...">
+      </div>
+    </div>
+
+    <div class="cards-grid" id="categoriesList"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="modal-overlay" id="categoryModal">
+  <div class="modal">
+    <h2 id="modalTitle">➕ إضافة قسم جديد</h2>
+    <form id="categoryForm">
+      <input type="hidden" id="categoryId">
+      <div class="form-group">
+        <label>📝 اسم القسم *</label>
+        <input type="text" id="categoryName" required placeholder="مثال: أدوات تحفيز">
+      </div>
+      <div class="form-group">
+        <label>🎨 الأيقونة (اختياري)</label>
+        <input type="text" id="categoryIcon" placeholder="💗" maxlength="4">
+      </div>
+      <div class="form-group">
+        <label>🖼️ رابط الصورة (اختياري)</label>
+        <input type="url" id="categoryImage" placeholder="https://example.com/image.jpg">
+      </div>
+      <div class="form-group">
+        <label>
+          <input type="checkbox" id="categoryActive" checked style="width:auto;margin-left:8px;">
+          ✅ مفعّل (يظهر في المتجر)
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="closeCategoryModal()">إلغاء</button>
+        <button type="submit" class="btn btn-gold">💾 حفظ</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  renderCategories();
+  document.getElementById('searchInput').addEventListener('input', renderCategories);
+  document.getElementById('categoryForm').addEventListener('submit', handleCategorySubmit);
+});
+
+function renderCategories(){
+  const categories = getCategories();
+  const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase();
+  const filtered = categories.filter(c => !searchTerm || c.name.toLowerCase().includes(searchTerm));
+  const container = document.getElementById('categoriesList');
+  
+  if(filtered.length === 0){
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <span class="icon">🏷️</span>
+        <h3>${categories.length === 0 ? 'لا توجد أقسام بعد' : 'لا توجد نتائج'}</h3>
+        <p>${categories.length === 0 ? 'ابدأ بإضافة أول قسم لمتجرك' : 'حاول البحث باسم آخر'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(cat => {
+    const productsCount = getProducts().filter(p => p.category == cat.id).length;
+    return `
+      <div class="card">
+        ${cat.image 
+          ? `<img class="card-image" src="${cat.image}" onerror="this.style.display='none'">` 
+          : `<div class="card-image" style="display:flex;align-items:center;justify-content:center;font-size:50px;background:var(--dark);">${cat.icon || '🏷️'}</div>`
+        }
+        <div class="card-body">
+          <div class="card-title">${cat.icon || '🏷️'} ${escapeHtml(cat.name)}</div>
+          <div class="card-meta">📦 ${productsCount} منتج ${cat.active === false ? ' • ⚠️ مخفي' : ''}</div>
+          <div class="card-actions">
+            <button class="btn-icon edit" onclick="editCategory(${cat.id})">✏️</button>
+            <button class="btn-icon danger" onclick="removeCategory(${cat.id})">🗑️</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openCategoryModal(){
+  document.getElementById('categoryForm').reset();
+  document.getElementById('categoryId').value = '';
+  document.getElementById('categoryActive').checked = true;
+  document.getElementById('modalTitle').textContent = '➕ إضافة قسم جديد';
+  document.getElementById('categoryModal').classList.add('show');
+}
+
+function editCategory(id){
+  const cat = getCategories().find(c => c.id === id);
+  if(!cat) return;
+  document.getElementById('categoryId').value = cat.id;
+  document.getElementById('categoryName').value = cat.name;
+  document.getElementById('categoryIcon').value = cat.icon || '';
+  document.getElementById('categoryImage').value = cat.image || '';
+  document.getElementById('categoryActive').checked = cat.active !== false;
+  document.getElementById('modalTitle').textContent = '✏️ تعديل القسم';
+  document.getElementById('categoryModal').classList.add('show');
+}
+
+function closeCategoryModal(){
+  document.getElementById('categoryModal').classList.remove('show');
+}
+
+function handleCategorySubmit(e){
+  e.preventDefault();
+  const id = document.getElementById('categoryId').value;
+  const data = {
+    name: document.getElementById('categoryName').value.trim(),
+    icon: document.getElementById('categoryIcon').value.trim(),
+    image: document.getElementById('categoryImage').value.trim(),
+    active: document.getElementById('categoryActive').checked
+  };
+  if(id){
+    updateCategory(parseInt(id), data);
+  } else {
+    addCategory(data);
+  }
+  closeCategoryModal();
+  renderCategories();
+}
+
+function removeCategory(id){
+  if(deleteCategory(id)){
+    renderCategories();
+  }
+}
+</script>
+
+</body>
+</html>

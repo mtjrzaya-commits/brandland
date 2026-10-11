@@ -1,1 +1,252 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الإعدادات | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html" class="active"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">⚙️ الإعدادات</span>
+      </div>
+    </div>
+
+    <h1 class="page-title">⚙️ إعدادات المتجر</h1>
+
+    <form id="settingsForm">
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;">
+        <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">🏪 معلومات المتجر</h2>
+        
+        <div class="form-group">
+          <label>📝 اسم المتجر</label>
+          <input type="text" id="storeName" placeholder="BRAND LAND">
+        </div>
+
+        <div class="form-group">
+          <label>📧 البريد الإلكتروني</label>
+          <input type="email" id="storeEmail" placeholder="mtjrzaya@gmail.com">
+        </div>
+
+        <div class="form-group">
+          <label>📱 رقم الجوال / واتساب</label>
+          <input type="tel" id="storePhone" placeholder="+966507000000">
+          <small style="color:var(--muted);font-size:11px;display:block;margin-top:5px;">
+            💡 هذا الرقم يظهر في المتجر + يُستخدم للتواصل
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label>📍 العنوان</label>
+          <input type="text" id="storeAddress" placeholder="الرياض، المملكة العربية السعودية">
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;">
+        <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">📱 وسائل التواصل</h2>
+        
+        <div class="form-group">
+          <label>💬 رقم واتساب</label>
+          <input type="tel" id="whatsapp" placeholder="+966507000000">
+        </div>
+
+        <div class="form-group">
+          <label>📷 إنستقرام</label>
+          <input type="text" id="instagram" placeholder="brandland">
+        </div>
+
+        <div class="form-group">
+          <label>🐦 تويتر / X</label>
+          <input type="text" id="twitter" placeholder="brandland">
+        </div>
+      </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;">
+        <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">🚚 إعدادات الشحن</h2>
+        
+        <div class="form-group">
+          <label>💰 تكلفة الشحن (ر.س)</label>
+          <input type="number" id="shippingCost" placeholder="25" min="0">
+        </div>
+
+        <div class="form-group">
+          <label>🎁 شحن مجاني للطلبات فوق (ر.س)</label>
+          <input type="number" id="freeShippingMin" placeholder="500" min="0">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-gold" style="width:100%;padding:15px;font-size:16px;">
+        💾 حفظ الإعدادات
+      </button>
+
+    </form>
+
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:20px;">
+      <h2 style="color:var(--gold);font-size:16px;margin-bottom:15px;">💾 البيانات والنسخ الاحتياطي</h2>
+      
+      <p style="color:var(--muted);font-size:13px;margin-bottom:15px;">
+        احتفظ بنسخة احتياطية من بيانات متجرك (المنتجات، الأقسام، الطلبات، الإعدادات)
+      </p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline" onclick="exportData()">
+          📤 تصدير البيانات
+        </button>
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('importFile').click()">
+          📥 استيراد البيانات
+        </button>
+        <button type="button" class="btn btn-danger" onclick="resetAllData()">
+          🗑️ حذف كل البيانات
+        </button>
+      </div>
+
+      <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html" class="active"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  loadSettings();
+  document.getElementById('settingsForm').addEventListener('submit', handleSettingsSubmit);
+});
+
+function loadSettings(){
+  const settings = getSettings();
+  document.getElementById('storeName').value = settings.storeName || '';
+  document.getElementById('storeEmail').value = settings.storeEmail || '';
+  document.getElementById('storePhone').value = settings.storePhone || '';
+  document.getElementById('storeAddress').value = settings.storeAddress || '';
+  document.getElementById('whatsapp').value = settings.whatsapp || '';
+  document.getElementById('instagram').value = settings.instagram || '';
+  document.getElementById('twitter').value = settings.twitter || '';
+  document.getElementById('shippingCost').value = settings.shippingCost || 25;
+  document.getElementById('freeShippingMin').value = settings.freeShippingMin || 500;
+}
+
+function handleSettingsSubmit(e){
+  e.preventDefault();
+  
+  const settings = {
+    storeName: document.getElementById('storeName').value.trim(),
+    storeEmail: document.getElementById('storeEmail').value.trim(),
+    storePhone: document.getElementById('storePhone').value.trim(),
+    storeAddress: document.getElementById('storeAddress').value.trim(),
+    whatsapp: document.getElementById('whatsapp').value.trim(),
+    instagram: document.getElementById('instagram').value.trim(),
+    twitter: document.getElementById('twitter').value.trim(),
+    shippingCost: parseFloat(document.getElementById('shippingCost').value) || 0,
+    freeShippingMin: parseFloat(document.getElementById('freeShippingMin').value) || 0
+  };
+
+  saveSettings(settings);
+}
+
+function exportData(){
+  const data = {
+    products: getProducts(),
+    categories: getCategories(),
+    banners: getBanners(),
+    orders: getOrders(),
+    settings: getSettings(),
+    exportDate: new Date().toISOString()
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'brandland-backup-' + Date.now() + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  showToast('✅ تم تصدير البيانات');
+}
+
+function importData(event){
+  const file = event.target.files[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    try {
+      const data = JSON.parse(e.target.result);
+      
+      if(!confirm('سيتم استبدال البيانات الحالية. هل تريد المتابعة؟')) return;
+
+      if(data.products) saveProducts(data.products);
+      if(data.categories) saveCategories(data.categories);
+      if(data.banners) saveBanners(data.banners);
+      if(data.orders) saveOrders(data.orders);
+      if(data.settings) saveSettings(data.settings);
+
+      showToast('✅ تم استيراد البيانات بنجاح');
+      loadSettings();
+    } catch(err) {
+      showToast('❌ ملف غير صالح', 'error');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAllData(){
+  if(!confirm('⚠️ سيتم حذف جميع البيانات. هل أنت متأكد؟')) return;
+  if(!confirm('⚠️ تأكيد نهائي: هل تريد الحذف؟')) return;
+
+  localStorage.removeItem('brandland_products');
+  localStorage.removeItem('brandland_categories');
+  localStorage.removeItem('brandland_banners');
+  localStorage.removeItem('brandland_orders');
+  localStorage.removeItem('brandland_settings');
+
+  showToast('🗑 تم حذف جميع البيانات');
+  loadSettings();
+}
+</script>
+
+</body>
+  </html>

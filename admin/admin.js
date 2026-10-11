@@ -7,10 +7,11 @@ const DEFAULT_SETTINGS = {
   storeName: 'BRAND LAND',
   storeEmail: 'mtjrzaya@gmail.com',
   storePhone: '+966507000000',
-  storeAddress: 'الرياض، المملكة العربية السعودية',
   whatsapp: '+966507000000',
+  storeAddress: 'الرياض، المملكة العربية السعودية',
   instagram: 'brandland',
   twitter: 'brandland',
+  tiktok: 'brandland',
   currency: 'SAR',
   freeShippingMin: 500,
   shippingCost: 25
@@ -252,7 +253,7 @@ function getStats(){
 }
 
 function formatPrice(price){
-  return (price || 0) + ' ر.س';
+  return (price || 0) + ' SAR';
 }
 
 function formatDate(dateStr){

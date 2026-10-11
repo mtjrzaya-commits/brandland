@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>العملاء | BRAND LAND</title>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
 
+<div class="admin-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="crown">👑</span>
+      <span class="logo-text">BRAND LAND</span>
+    </div>
+    <nav>
+      <a href="dashboard.html"><span class="icon">📊</span> لوحة التحكم</a>
+      <a href="products.html"><span class="icon">➕</span> المنتجات</a>
+      <a href="categories.html"><span class="icon">🏷️</span> الأقسام</a>
+      <a href="banners.html"><span class="icon">🖼️</span> البانرات</a>
+      <a href="orders.html"><span class="icon">📦</span> الطلبات</a>
+      <a href="customers.html" class="active"><span class="icon">👥</span> العملاء</a>
+      <a href="settings.html"><span class="icon">⚙️</span> الإعدادات</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="#" onclick="logout(); return false;">
+        <span class="icon">🚪</span> تسجيل خروج
+      </a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main-content">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <span class="topbar-title">👥 إدارة العملاء</span>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon" onclick="location.href='settings.html'">⚙️</button>
+      </div>
+    </div>
+
+    <h1 class="page-title">👥 العملاء</h1>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <span class="icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="ابحث عن عميل...">
+      </div>
+    </div>
+
+    <div id="customersList"></div>
+
+  </main>
+
+  <nav class="bottom-nav">
+    <a href="dashboard.html"><span class="nav-icon">📊</span><span>الرئيسية</span></a>
+    <a href="products.html"><span class="nav-icon">➕</span><span>المنتجات</span></a>
+    <a href="orders.html"><span class="nav-icon">📦</span><span>الطلبات</span></a>
+    <a href="settings.html"><span class="nav-icon">⚙️</span><span>الإعدادات</span></a>
+  </nav>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if(!checkAuth()) return;
+  renderCustomers();
+  document.getElementById('searchInput').addEventListener('input', renderCustomers);
+});
+
+function extractCustomersFromOrders(){
+  const orders = getOrders();
+  const customersMap = new Map();
+  
+  orders.forEach(order => {
+    const key = order.customerPhone || order.customerName || 'unknown';
+    if(!key || key === 'unknown') return;
+    
+    if(customersMap.has(key)){
+      const existing = customersMap.get(key);
+      existing.ordersCount++;
+      existing.totalSpent += (order.total || 0);
+      existing.lastOrder = order.date;
+    } else {
+      customersMap.set(key, {
+        id: key,
+        name: order.customerName || 'عميل',
+        phone: order.customerPhone || '-',
+        city: order.city || '-',
+        address: order.address || '-',
+        ordersCount: 1,
+        totalSpent: order.total || 0,
+        firstOrder: order.date,
+        lastOrder: order.date
+      });
+    }
+  });
+  
+  return Array.from(customersMap.values());
+}
+
+function renderCustomers(){
+  const customers = extractCustomersFromOrders();
+  const searchTerm = (document.getElementById('searchInput').value || '').toLowerCase();
+  const filtered = customers.filter(c => 
+    !searchTerm || c.name.toLowerCase().includes(searchTerm) || c.phone.includes(searchTerm)
+  );
+  
+  const container = document.getElementById('customersList');
+  
+  if(filtered.length === 0){
+    container.innerHTML = `
+      <div class="empty-state">
+        <span class="icon">👥</span>
+        <h3>${customers.length === 0 ? 'لا يوجد عملاء بعد' : 'لا توجد نتائج'}</h3>
+        <p>${customers.length === 0 ? 'سيظهر العملاء هنا عند وصول أول طلب' : 'حاول البحث باسم آخر'}</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(customer => `
+    <div class="card" style="margin-bottom:15px;">
+      <div class="card-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div>
+            <div class="card-title">👤 ${escapeHtml(customer.name)}</div>
+            <div class="card-meta">📞 ${escapeHtml(customer.phone)}</div>
+            <div class="card-meta">📍 ${escapeHtml(customer.city)}</div>
+          </div>
+          <button class="btn-icon danger" onclick="removeCustomer('${escapeHtml(customer.id)}')">🗑️</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px;">
+          <div style="background:var(--black);padding:10px;border-radius:8px;text-align:center;">
+            <div style="color:var(--gold);font-weight:900;font-size:18px;">${customer.ordersCount}</div>
+            <div style="color:var(--muted);font-size:11px;">طلب</div>
+          </div>
+          <div style="background:var(--black);padding:10px;border-radius:8px;text-align:center;">
+            <div style="color:var(--gold);font-weight:900;font-size:18px;">${customer.totalSpent.toFixed(0)}</div>
+            <div style="color:var(--muted);font-size:11px;">ر.س</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function removeCustomer(id){
+  if(!confirm('هل تريد حذف هذا العميل وجميع طلباته؟')) return;
+  const orders = getOrders().filter(o => 
+    (o.customerPhone !== id) && (o.customerName !== id)
+  );
+  saveOrders(orders);
+  showToast('🗑 تم حذف العميل');
+  renderCustomers();
+}
+</script>
+
+</body>
+</html>

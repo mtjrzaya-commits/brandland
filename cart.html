@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سلة التسوق | BRAND LAND</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="location.href='index.html'">←</button>
+  </div>
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<!-- ===== صفحة السلة ===== -->
+<div class="cart-page">
+
+  <div class="cart-header">
+    <h1>سلة التسوق</h1>
+    <button class="clear-btn" onclick="clearCart()" title="حذف الكل">🗑</button>
+  </div>
+
+  <div id="cartItems"></div>
+
+  <div id="cartSummary" style="display:none;">
+    <div class="cart-total">
+      <span class="label">المجموع الكلي</span>
+      <span class="amount" id="totalAmount">0 SAR</span>
+    </div>
+
+    <a href="checkout.html">
+      <button class="btn-primary" style="margin-top:20px;">
+        ← إتمام الطلب
+      </button>
+    </a>
+  </div>
+
+</div>
+
+<!-- ===== الفوتر ===== -->
+<footer>
+  <div class="logo-small">BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+  <p>© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- ===== الشريط السفلي ===== -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <span class="nav-icon">🏠</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="categories.html">
+    <span class="nav-icon">⊞</span>
+    <span>الأقسام</span>
+  </a>
+  <a href="cart.html" class="active">
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
+  </a>
+  <a href="checkout.html">
+    <span class="nav-icon">👤</span>
+    <span>حسابي</span>
+  </a>
+</nav>
+
+<script src="script.js"></script>
+<script>
+// ===== عرض السلة =====
+function renderCart(){
+  const cart = getCart();
+  const itemsDiv = document.getElementById('cartItems');
+  const summary = document.getElementById('cartSummary');
+  const totalEl = document.getElementById('totalAmount');
+
+  // إذا السلة فارغة
+  if(!cart || cart.length === 0){
+    itemsDiv.innerHTML = `
+      <div class="empty-cart">
+        <div class="icon">🛒</div>
+        <p>سلة التسوق فارغة</p>
+        <a href="index.html">
+          <button class="btn-primary">ابدأ التسوق</button>
+        </a>
+      </div>
+    `;
+    summary.style.display = 'none';
+    return;
+  }
+
+  // عرض المنتجات
+  let total = 0;
+  itemsDiv.innerHTML = cart.map(item => {
+    total += item.price * item.qty;
+    return `
+      <div class="cart-item">
+        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80/D4AF37/000000?text=P'">
+        <div class="cart-item-info">
+          <h3>${item.name}</h3>
+          <div class="item-price">${item.price} SAR</div>
+          <div class="qty-controls">
+            <button onclick="updateQty(${item.id}, -1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="updateQty(${item.id}, 1)">+</button>
+          </div>
+        </div>
+        <button class="delete-btn" onclick="deleteItem(${item.id})">🗑</button>
+      </div>
+    `;
+  }).join('');
+
+  totalEl.textContent = total + ' SAR';
+  summary.style.display = 'block';
+}
+
+// حذف منتج
+function deleteItem(id){
+  removeFromCart(id);
+  renderCart();
+}
+
+// تفريغ السلة
+function clearCart(){
+  if(confirm('هل تريد حذف جميع المنتجات من السلة؟')){
+    localStorage.removeItem('brandland_cart');
+    updateCartCount();
+    renderCart();
+    showToast('🗑 تم تفريغ السلة');
+  }
+}
+
+// عند التحميل
+document.addEventListener('DOMContentLoaded', renderCart);
+</script>
+
+</body>
+</html>

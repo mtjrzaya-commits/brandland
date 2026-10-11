@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRAND LAND | براند لاند - ألعاب زوجية</title>
+<meta name="description" content="براند لاند - متجرك المفضل للألعاب الزوجية. منتجات أصلية 100%، توصيل سريع، الدفع عند الاستلام.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="toggleMenu()">☰</button>
+  </div>
+
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<!-- ===== القائمة الجانبية ===== -->
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<aside class="side-menu" id="sideMenu">
+  <div class="side-menu-header">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <nav>
+    <a href="index.html"><span>الرئيسية</span><span class="arrow">›</span></a>
+    <a href="categories.html"><span>الأقسام</span><span class="arrow">›</span></a>
+    <a href="product.html"><span>الألعاب</span><span class="arrow">›</span></a>
+    <a href="cart.html"><span>المفضلة</span><span class="arrow">›</span></a>
+    <a href="checkout.html"><span>حسابي</span><span class="arrow">›</span></a>
+    <a href="mailto:mtjrzaya@gmail.com"><span>تواصل معنا</span><span class="arrow">›</span></a>
+  </nav>
+  <div class="side-menu-footer">
+    <p>معاً .. كل لحظة أجمل ♡</p>
+  </div>
+</aside>
+
+<!-- ===== البحث ===== -->
+<div class="search-bar">
+  <span class="icon">🔍</span>
+  <input type="text" placeholder="ابحث عن العاب زوجية، أدوات، أو أي منتج آخر...">
+</div>
+
+<!-- ===== البانر ===== -->
+<div class="hero-banner">
+  <div class="hero-content">
+    <h1>ألعاب زوجية</h1>
+    <div class="subtitle">لأن المتعة أجمل معاً</div>
+    <div class="tagline">COUPLES GAMES<br>MORE FUN TOGETHER</div>
+    <button class="btn-hero" onclick="location.href='categories.html'">تسوق الآن</button>
+  </div>
+</div>
+
+<!-- ===== الأقسام الدائرية ===== -->
+<div class="categories-circle">
+  <div class="cat-circle" onclick="location.href='categories.html'">
+    <div class="circle">💗</div>
+    <span>أدوات تحفيز</span>
+  </div>
+  <div class="cat-circle" onclick="location.href='categories.html'">
+    <div class="circle">🎮</div>
+    <span>ألعاب زوجية</span>
+  </div>
+  <div class="cat-circle" onclick="location.href='categories.html'">
+    <div class="circle">💛</div>
+    <span>مستلزمات</span>
+  </div>
+  <div class="cat-circle" onclick="location.href='categories.html'">
+    <div class="circle">🎁</div>
+    <span>هدايا رومانسية</span>
+  </div>
+  <div class="cat-circle" onclick="location.href='categories.html'">
+    <div class="circle">🔥</div>
+    <span>جروحين</span>
+  </div>
+</div>
+
+<!-- ===== أفضل المنتجات ===== -->
+<h2 class="section-title">♡ أفضل المنتجات ♡</h2>
+
+<div class="products-grid" id="productsGrid"></div>
+
+<!-- ===== الفوتر ===== -->
+<footer>
+  <div class="logo-small">BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+  <p>© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- ===== الشريط السفلي ===== -->
+<nav class="bottom-nav">
+  <a href="index.html" class="active">
+    <span class="nav-icon">🏠</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="categories.html">
+    <span class="nav-icon">⊞</span>
+    <span>الأقسام</span>
+  </a>
+  <a href="cart.html">
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
+  </a>
+  <a href="checkout.html">
+    <span class="nav-icon">👤</span>
+    <span>حسابي</span>
+  </a>
+</nav>
+
+<!-- ===== السكربت ===== -->
+<script src="script.js"></script>
+<script>
+// قائمة المنتجات (يمكنك تعديلها لاحقاً)
+const PRODUCTS = [
+  {
+    id: 1,
+    name: 'لعبة الحقيقة والجرأة للزوجين',
+    price: 109,
+    image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=400',
+    rating: 5,
+    reviews: 124
+  },
+  {
+    id: 2,
+    name: 'قيود جلدية للزوجين',
+    price: 69,
+    image: 'https://images.unsplash.com/photo-1587304847864-21e50e1e0c88?w=400',
+    rating: 4,
+    reviews: 86
+  },
+  {
+    id: 3,
+    name: 'زهر الإنارة للزوجين',
+    price: 72,
+    image: 'https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=400',
+    rating: 5,
+    reviews: 92
+  },
+  {
+    id: 4,
+    name: 'أداة تحفيز مزدوجة',
+    price: 149,
+    image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400',
+    rating: 5,
+    reviews: 145
+  }
+];
+
+// عرض المنتجات
+function renderProducts(){
+  const grid = document.getElementById('productsGrid');
+  grid.innerHTML = PRODUCTS.map(p => `
+    <div class="product-card">
+      <div class="product-img-wrap">
+        <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300/D4AF37/000000?text=Brand+Land'">
+        <div class="heart-icon" onclick="event.stopPropagation(); this.classList.toggle('active')">♡</div>
+      </div>
+      <div class="product-info">
+        <h3>${p.name}</h3>
+        <div class="price">${p.price} SAR</div>
+        <div class="product-actions">
+          <button class="btn-add-cart" onclick="event.stopPropagation(); addToCartItem(${p.id})">
+            🛒 أضف إلى السلة
+          </button>
+          <button class="btn-order-now" onclick="event.stopPropagation(); orderNow(${p.id})">
+            ⚡ اطلب الآن
+          </button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCartItem(id){
+  const product = PRODUCTS.find(p => p.id === id);
+  if(product && typeof addToCart === 'function'){
+    addToCart(product, 1);
+  }
+}
+
+function orderNow(id){
+  const product = PRODUCTS.find(p => p.id === id);
+  if(product && typeof addToCart === 'function'){
+    addToCart(product, 1);
+    setTimeout(() => location.href = 'checkout.html', 500);
+  }
+}
+
+function toggleMenu(){
+  document.getElementById('sideMenu').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+
+document.addEventListener('DOMContentLoaded', renderProducts);
+</script>
+
+</body>
+</html>

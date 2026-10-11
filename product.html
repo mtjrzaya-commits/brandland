@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جهاز تحفيز نقطة الجي والبظر | BRAND LAND</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .detail-wrapper{position:relative;}
+  .main-image{
+    width:100%;aspect-ratio:1/1;object-fit:cover;
+    background:var(--card);
+  }
+  .image-overlay-btns{position:absolute;top:0;left:0;right:0;}
+</style>
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="location.href='index.html'">←</button>
+  </div>
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<!-- ===== صفحة المنتج ===== -->
+<div class="product-detail">
+
+  <div class="detail-wrapper">
+    <img class="main-image" 
+         src="https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=600" 
+         alt="جهاز تحفيز نقطة الجي والبظر">
+    
+    <button class="back-btn" onclick="location.href='index.html'">←</button>
+    <button class="share-btn" onclick="shareProduct()">↗</button>
+  </div>
+
+  <div class="product-info-detail">
+    <h1>جهاز تحفيز نقطة الجي والبظر – ألعاب زوجية</h1>
+
+    <div class="rating">
+      <span class="stars">★★★★★</span>
+      <span class="count">(124)</span>
+    </div>
+
+    <div class="price-big">
+      149 SAR
+      <small>199 SAR</small>
+    </div>
+
+    <!-- اللون -->
+    <div class="option-group">
+      <label>اللون</label>
+      <div class="color-options">
+        <div class="color-dot active" 
+             style="background:#C0392B;" 
+             onclick="selectColor(this)"></div>
+        <div class="color-dot" 
+             style="background:#1a1a1a;border:1px solid #444;" 
+             onclick="selectColor(this)"></div>
+        <div class="color-dot" 
+             style="background:#F5C6CB;" 
+             onclick="selectColor(this)"></div>
+      </div>
+    </div>
+
+    <!-- الحجم -->
+    <div class="option-group">
+      <label>الحجم</label>
+      <div class="size-options">
+        <button class="size-btn" onclick="selectSize(this)">S</button>
+        <button class="size-btn active" onclick="selectSize(this)">M</button>
+        <button class="size-btn" onclick="selectSize(this)">L</button>
+        <button class="size-btn" onclick="selectSize(this)">XL</button>
+      </div>
+    </div>
+
+    <!-- الأزرار -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:25px;">
+      <button class="btn-primary" onclick="addProductToCart()">
+        🛒 أضف إلى السلة
+      </button>
+      <button class="btn-secondary" onclick="orderProductNow()">
+        ⚡ اطلب الآن
+      </button>
+    </div>
+
+    <!-- وصف المنتج -->
+    <div style="margin-top:35px;padding:20px;background:var(--card);border-radius:12px;border-right:4px solid var(--gold);">
+      <h3 style="color:var(--gold);margin-bottom:12px;font-size:16px;">وصف المنتج</h3>
+      <p style="color:var(--text);font-size:14px;margin-bottom:12px;">
+        اكتشف سحر المتعة الزوجية مع هذا الجهاز المصمم خصيصاً لتعزيز الإثارة والوصول إلى النشوة بطريقة ممتعة وآمنة.
+      </p>
+      <p style="color:var(--text);font-size:14px;margin-bottom:12px;">
+        <strong style="color:var(--gold);">المميزات:</strong>
+      </p>
+      <ul style="color:var(--text);font-size:14px;padding-right:20px;line-height:1.9;">
+        <li>تصميم أنيق ومريح</li>
+        <li>مواد آمنة 100%</li>
+        <li>سهل الاستخدام والتنظيف</li>
+        <li>مناسب للسفر والتخزين</li>
+      </ul>
+    </div>
+
+    <!-- شارات الثقة -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;">
+      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
+        <div style="font-size:22px;margin-bottom:5px;">🔒</div>
+        <div style="font-size:11px;color:var(--muted);">دفع آمن</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
+        <div style="font-size:22px;margin-bottom:5px;">🚚</div>
+        <div style="font-size:11px;color:var(--muted);">توصيل سريع</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
+        <div style="font-size:22px;margin-bottom:5px;">✅</div>
+        <div style="font-size:11px;color:var(--muted);">أصلي 100%</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== الفوتر ===== -->
+<footer>
+  <div class="logo-small">BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+  <p>© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- ===== الشريط السفلي ===== -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <span class="nav-icon">🏠</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="categories.html">
+    <span class="nav-icon">⊞</span>
+    <span>الأقسام</span>
+  </a>
+  <a href="cart.html">
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
+  </a>
+  <a href="checkout.html">
+    <span class="nav-icon">👤</span>
+    <span>حسابي</span>
+  </a>
+</nav>
+
+<script src="script.js"></script>
+<script>
+// ===== بيانات المنتج =====
+const PRODUCT = {
+  id: 1,
+  name: 'جهاز تحفيز نقطة الجي والبظر – ألعاب زوجية',
+  price: 149,
+  image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=600'
+};
+
+// اختيار اللون
+function selectColor(el){
+  document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// اختيار الحجم
+function selectSize(el){
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// إضافة إلى السلة
+function addProductToCart(){
+  if(typeof addToCart === 'function'){
+    addToCart(PRODUCT, 1);
+  }
+}
+
+// اطلب الآن
+function orderProductNow(){
+  if(typeof addToCart === 'function'){
+    addToCart(PRODUCT, 1);
+    setTimeout(() => location.href = 'checkout.html', 500);
+  }
+}
+
+// مشاركة المنتج
+function shareProduct(){
+  const url = window.location.href;
+  if(navigator.share){
+    navigator.share({
+      title: PRODUCT.name,
+      text: 'شاهد هذا المنتج من BRAND LAND',
+      url: url
+    }).catch(() => {});
+  } else {
+    // نسخ الرابط
+    navigator.clipboard.writeText(url).then(() => {
+      if(typeof showToast === 'function'){
+        showToast('✅ تم نسخ الرابط');
+      }
+    });
+  }
+}
+</script>
+
+</body>
+</html>

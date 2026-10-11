@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إتمام الطلب | BRAND LAND</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="location.href='cart.html'">←</button>
+  </div>
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<!-- ===== صفحة إتمام الطلب ===== -->
+<div class="checkout-page">
+
+  <h1>إتمام الطلب</h1>
+
+  <!-- ملخص الطلب -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:25px;">
+    <h2 style="color:var(--gold);font-size:16px;margin:0 0 15px;">📦 ملخص الطلب</h2>
+    <div id="orderSummary"></div>
+    <div style="border-top:1px solid var(--border);margin-top:15px;padding-top:15px;display:flex;justify-content:space-between;">
+      <span style="color:var(--text);">المجموع الكلي:</span>
+      <span style="color:var(--gold);font-weight:900;font-size:18px;" id="checkoutTotal">0 SAR</span>
+    </div>
+  </div>
+
+  <form id="orderForm">
+    
+    <h2>📝 معلومات الشحن</h2>
+
+    <div class="form-group">
+      <label>الاسم الكامل *</label>
+      <div class="input-wrap">
+        <span class="icon">👤</span>
+        <input type="text" name="name" required placeholder="أدخل اسمك الكامل">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>رقم الجوال *</label>
+      <div class="input-wrap">
+        <span class="icon">📞</span>
+        <input type="tel" name="phone" required placeholder="05XXXXXXXX" pattern="[0-9]{10}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>المدينة *</label>
+      <div class="input-wrap">
+        <span class="icon">🏙</span>
+        <input type="text" name="city" required placeholder="مثال: الرياض">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>العنوان التفصيلي *</label>
+      <div class="input-wrap">
+        <span class="icon">📍</span>
+        <textarea name="address" required placeholder="الحي، الشارع، رقم المبنى"></textarea>
+      </div>
+    </div>
+
+    <h2>💳 طريقة الدفع</h2>
+
+    <div class="payment-options">
+      <div class="payment-option selected" onclick="selectPayment(this, 'card')">
+        <div class="left">
+          <div class="radio"></div>
+          <div class="label">بطاقة ائتمانية</div>
+        </div>
+        <div class="icon">💳</div>
+      </div>
+
+      <div class="payment-option" onclick="selectPayment(this, 'cod')">
+        <div class="left">
+          <div class="radio"></div>
+          <div class="label">الدفع عند الاستلام</div>
+        </div>
+        <div class="icon">💵</div>
+      </div>
+    </div>
+
+    <input type="hidden" name="payment" id="paymentType" value="card">
+
+    <div class="form-group" style="margin-top:20px;">
+      <label>ملاحظات إضافية (اختياري)</label>
+      <div class="input-wrap">
+        <span class="icon">📝</span>
+        <textarea name="notes" placeholder="أي تعليمات إضافية؟"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-primary">
+      ✅ تأكيد الطلب
+    </button>
+
+  </form>
+
+</div>
+
+<!-- ===== الفوتر ===== -->
+<footer>
+  <div class="logo-small">BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+  <p>© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<script src="script.js"></script>
+<script>
+// ===== عرض ملخص الطلب =====
+function renderSummary(){
+  const cart = getCart();
+  const summary = document.getElementById('orderSummary');
+  const totalEl = document.getElementById('checkoutTotal');
+
+  if(!cart || cart.length === 0){
+    summary.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px;">لا توجد منتجات في السلة</p>';
+    totalEl.textContent = '0 SAR';
+    return;
+  }
+
+  let total = 0;
+  summary.innerHTML = cart.map(item => {
+    total += item.price * item.qty;
+    return `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;color:var(--text);font-size:14px;">
+        <span>${item.name} × ${item.qty}</span>
+        <span style="color:var(--gold);font-weight:700;">${item.price * item.qty} SAR</span>
+      </div>
+    `;
+  }).join('');
+
+  totalEl.textContent = total + ' SAR';
+}
+
+// ===== اختيار طريقة الدفع =====
+function selectPayment(el, type){
+  document.querySelectorAll('.payment-option').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('paymentType').value = type;
+}
+
+// ===== إرسال الطلب =====
+document.getElementById('orderForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const cart = getCart();
+  if(!cart || cart.length === 0){
+    showToast('⚠️ السلة فارغة');
+    return;
+  }
+
+  const formData = new FormData(this);
+  const order = Object.fromEntries(formData);
+  order.cart = cart;
+  order.total = cart.reduce((s,i) => s + i.price * i.qty, 0);
+  order.date = new Date().toLocaleString('ar-SA');
+  order.orderNumber = 'BL' + Math.floor(100000 + Math.random() * 900000);
+
+  // حفظ الطلب
+  const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('brandland_orders', JSON.stringify(orders));
+
+  // تفريغ السلة
+  localStorage.removeItem('brandland_cart');
+
+  // الانتقال لصفحة النجاح
+  window.location.href = 'success.html?order=' + order.orderNumber;
+});
+
+document.addEventListener('DOMContentLoaded', renderSummary);
+</script>
+
+</body>
+</html>

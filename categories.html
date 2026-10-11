@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأقسام | BRAND LAND</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .cat-grid{
+    padding:0 18px 30px;
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+  }
+  .cat-card{
+    background:var(--card);
+    border:1px solid rgba(212,175,55,0.4);
+    border-radius:14px;
+    overflow:hidden;
+    transition:.3s;
+    cursor:pointer;
+    position:relative;
+  }
+  .cat-card:hover{
+    border-color:var(--gold);
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(212,175,55,0.2);
+  }
+  .cat-card img{
+    width:100%;height:130px;object-fit:cover;
+  }
+  .cat-card .cat-name{
+    padding:12px 15px;
+    color:var(--gold);font-weight:700;
+    font-size:14px;text-align:center;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .cat-card .arrow{
+    color:var(--gold);font-size:16px;
+  }
+  .section-header{
+    text-align:center;
+    padding:25px 18px 15px;
+  }
+  .section-header .crown-big{
+    font-size:36px;color:var(--gold);
+    display:block;margin-bottom:8px;
+  }
+  .section-header h1{
+    font-size:28px;font-weight:900;
+    background:linear-gradient(90deg,var(--gold),var(--gold-light));
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:6px;
+  }
+  .section-header .subtitle{
+    color:var(--muted);font-size:13px;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== الهيدر ===== -->
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="location.href='index.html'">←</button>
+  </div>
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<!-- ===== رأس الصفحة ===== -->
+<div class="section-header">
+  <span class="crown-big">👑</span>
+  <h1>الأقسام</h1>
+  <div class="subtitle">
+    <span>←</span>
+    <span>كل ما تحتاجه لأجمل لحظاتك</span>
+    <span>→</span>
+  </div>
+</div>
+
+<!-- ===== شبكة الأقسام ===== -->
+<div class="cat-grid">
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1587304847864-21e50e1e0c88?w=400" alt="ألعاب زوجية">
+    <div class="cat-name">
+      <span>ألعاب زوجية</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=400" alt="أجهزة استمناء رجالي">
+    <div class="cat-name">
+      <span>أجهزة استمناء رجالي</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1541273968904-c5e7ff28e2a0?w=400" alt="أقفاص عفة">
+    <div class="cat-name">
+      <span>أقفاص عفة</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=400" alt="الملابس الأنجري">
+    <div class="cat-name">
+      <span>الملابس الأنجري</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400" alt="المنتجات الأكثر مبيعاً">
+    <div class="cat-name">
+      <span>المنتجات الأكثر مبيعاً</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1611095973763-414019e72400?w=400" alt="حلقات الاحتضاب">
+    <div class="cat-name">
+      <span>حلقات الاحتضاب</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400" alt="سيدات شرجية">
+    <div class="cat-name">
+      <span>سيدات شرجية</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=400" alt="قصبان صناعي">
+    <div class="cat-name">
+      <span>قصبان صناعي</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1584362917165-526a968579e8?w=400" alt="منشطات جنسية للرجال">
+    <div class="cat-name">
+      <span>منشطات جنسية للرجال</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'">
+    <img src="https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400" alt="منشطات جنسية للنساء">
+    <div class="cat-name">
+      <span>منشطات جنسية للنساء</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+  <div class="cat-card" onclick="location.href='product.html'" style="grid-column:1/-1;">
+    <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600" alt="هزازات نسائية" style="height:150px;">
+    <div class="cat-name">
+      <span>هزازات نسائية</span>
+      <span class="arrow">‹</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== الفوتر ===== -->
+<footer>
+  <div class="logo-small">BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+  <p>© 2026 جميع الحقوق محفوظة</p>
+</footer>
+
+<!-- ===== الشريط السفلي ===== -->
+<nav class="bottom-nav">
+  <a href="index.html">
+    <span class="nav-icon">🏠</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="categories.html" class="active">
+    <span class="nav-icon">⊞</span>
+    <span>الأقسام</span>
+  </a>
+  <a href="cart.html">
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
+  </a>
+  <a href="checkout.html">
+    <span class="nav-icon">👤</span>
+    <span>حسابي</span>
+  </a>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

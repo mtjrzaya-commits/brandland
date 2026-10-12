@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<meta name="google-site-verification" content="jjNgT8H8Y3fJx3J-kh-YaoHg4XtELHZUre5uxvHkUBc" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BRAND LAND | براند لاند - ألعاب زوجية</title>
@@ -9,17 +10,14 @@
 </head>
 <body>
 
-<!-- ===== الهيدر ===== -->
 <header>
   <div class="header-left">
     <button class="icon-btn" onclick="toggleMenu()">☰</button>
   </div>
-
   <div class="logo-center">
     <span class="crown">👑</span>
     <span class="logo-text">BRAND LAND</span>
   </div>
-
   <div class="header-right">
     <a href="cart.html">
       <button class="icon-btn">
@@ -30,7 +28,6 @@
   </div>
 </header>
 
-<!-- ===== القائمة الجانبية ===== -->
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 <aside class="side-menu" id="sideMenu">
   <div class="side-menu-header">
@@ -50,13 +47,11 @@
   </div>
 </aside>
 
-<!-- ===== البحث ===== -->
 <div class="search-bar">
   <span class="icon">🔍</span>
   <input type="text" placeholder="ابحث عن العاب زوجية، أدوات، أو أي منتج آخر...">
 </div>
 
-<!-- ===== البانر ===== -->
 <div class="hero-banner">
   <div class="hero-content">
     <h1>ألعاب زوجية</h1>
@@ -66,7 +61,6 @@
   </div>
 </div>
 
-<!-- ===== الأقسام الدائرية ===== -->
 <div class="categories-circle">
   <div class="cat-circle" onclick="location.href='categories.html'">
     <div class="circle">💗</div>
@@ -90,19 +84,16 @@
   </div>
 </div>
 
-<!-- ===== أفضل المنتجات ===== -->
 <h2 class="section-title">♡ أفضل المنتجات ♡</h2>
 
 <div class="products-grid" id="productsGrid"></div>
 
-<!-- ===== الفوتر ===== -->
 <footer>
   <div class="logo-small">BRAND LAND</div>
   <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
   <p>© 2026 جميع الحقوق محفوظة</p>
 </footer>
 
-<!-- ===== الشريط السفلي ===== -->
 <nav class="bottom-nav">
   <a href="index.html" class="active">
     <span class="nav-icon">🏠</span>
@@ -122,10 +113,8 @@
   </a>
 </nav>
 
-<!-- ===== السكربت ===== -->
 <script src="script.js"></script>
 <script>
-// قائمة المنتجات (يمكنك تعديلها لاحقاً)
 const PRODUCTS = [
   {
     id: 1,
@@ -161,7 +150,6 @@ const PRODUCTS = [
   }
 ];
 
-// عرض المنتجات
 function renderProducts(){
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = PRODUCTS.map(p => `

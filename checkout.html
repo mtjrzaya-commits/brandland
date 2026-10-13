@@ -5,45 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>إتمام الطلب | BRAND LAND</title>
 <link rel="stylesheet" href="style.css">
-<style>
-  .checkout-form{padding:20px 18px;max-width:600px;margin:0 auto;}
-  .checkout-title{color:var(--gold);font-size:22px;text-align:center;margin-bottom:20px;font-weight:900;}
-  .form-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;}
-  .form-section h2{color:var(--gold);font-size:15px;margin-bottom:15px;}
-  .form-group{margin-bottom:15px;}
-  .form-group label{display:block;color:var(--gold);font-size:13px;margin-bottom:6px;font-weight:500;}
-  .form-group input,
-  .form-group textarea{
-    width:100%;background:var(--black);border:1px solid var(--border);
-    border-radius:10px;padding:12px 15px;color:var(--text);
-    font-size:14px;font-family:'Tajawal',sans-serif;outline:none;transition:.3s;
-  }
-  .form-group input:focus,
-  .form-group textarea:focus{border-color:var(--gold);}
-  .form-group textarea{resize:vertical;min-height:70px;}
-  .order-summary{background:var(--card);border:1px solid var(--gold);border-radius:14px;padding:18px;margin-bottom:20px;}
-  .order-summary h3{color:var(--gold);font-size:15px;margin-bottom:12px;}
-  .order-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
-  .order-item:last-child{border-bottom:none;}
-  .order-item img{width:50px;height:50px;object-fit:cover;border-radius:8px;border:1px solid var(--border);}
-  .order-item-info{flex:1;}
-  .order-item-info h4{color:var(--text);font-size:13px;margin-bottom:3px;}
-  .order-item-info .qty{color:var(--muted);font-size:11px;}
-  .order-item-price{color:var(--gold);font-weight:700;font-size:14px;}
-  .order-total{display:flex;justify-content:space-between;padding-top:12px;border-top:2px solid var(--gold);margin-top:10px;}
-  .order-total span:first-child{color:var(--text);}
-  .order-total span:last-child{color:var(--gold);font-weight:900;font-size:18px;}
-  .whatsapp-btn{
-    width:100%;background:linear-gradient(90deg,#25D366,#128C7E);
-    color:#fff;border:none;padding:16px;border-radius:12px;
-    font-size:16px;font-weight:900;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    box-shadow:0 8px 25px rgba(37,211,102,0.3);transition:.3s;
-  }
-  .whatsapp-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,0.4);}
-  .whatsapp-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-  .note{color:var(--muted);font-size:12px;text-align:center;margin-top:15px;line-height:1.7;}
-</style>
 </head>
 <body>
 
@@ -65,64 +26,63 @@
   </div>
 </header>
 
-<div class="checkout-form">
-  <h1 class="checkout-title">📝 إتمام الطلب</h1>
+<div class="checkout-page">
+  
+  <h1>📝 إتمام الطلب</h1>
 
-  <!-- ملخص المنتجات -->
   <div class="order-summary" id="orderSummary"></div>
 
-  <!-- نموذج البيانات -->
   <form id="orderForm">
-    <div class="form-section">
-      <h2>👤 معلومات الشحن</h2>
+    
+    <h2>👤 معلومات الشحن</h2>
 
-      <div class="form-group">
-        <label>الاسم الكامل *</label>
-        <input type="text" id="customerName" required placeholder="أدخل اسمك الكامل">
-      </div>
-
-      <div class="form-group">
-        <label>رقم الجوال *</label>
-        <input type="tel" id="customerPhone" required placeholder="05XXXXXXXX" pattern="[0-9]{9,10}">
-      </div>
-
-      <div class="form-group">
-        <label>المدينة *</label>
-        <input type="text" id="customerCity" required placeholder="مثال: الرياض">
-      </div>
-
-      <div class="form-group">
-        <label>الحي *</label>
-        <input type="text" id="customerDistrict" required placeholder="مثال: حي النخيل">
-      </div>
-
-      <div class="form-group">
-        <label>العنوان الوطني *</label>
-        <textarea id="customerAddress" required placeholder="مثال: 1234، شارع الملك فهد، الرمز البريدي 12345"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>ملاحظات إضافية (اختياري)</label>
-        <textarea id="customerNotes" placeholder="أي تعليمات إضافية؟"></textarea>
-      </div>
+    <div class="form-group">
+      <label>الاسم الكامل *</label>
+      <input type="text" id="customerName" required placeholder="أدخل اسمك الكامل">
     </div>
 
-    <button type="submit" class="whatsapp-btn" id="submitBtn">
+    <div class="form-group">
+      <label>رقم الجوال *</label>
+      <input type="tel" id="customerPhone" required placeholder="05XXXXXXXX" pattern="[0-9]{9,10}">
+    </div>
+
+    <div class="form-group">
+      <label>المدينة *</label>
+      <input type="text" id="customerCity" required placeholder="مثال: الرياض">
+    </div>
+
+    <div class="form-group">
+      <label>الحي *</label>
+      <input type="text" id="customerDistrict" required placeholder="مثال: حي النخيل">
+    </div>
+
+    <div class="form-group">
+      <label>العنوان الوطني *</label>
+      <textarea id="customerAddress" required placeholder="مثال: 1234، شارع الملك فهد، الرمز البريدي 12345"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>ملاحظات إضافية (اختياري)</label>
+      <textarea id="customerNotes" placeholder="أي تعليمات إضافية؟"></textarea>
+    </div>
+
+    <button type="submit" class="whatsapp-btn">
       <span>💬</span>
       <span>تأكيد الطلب عبر واتساب</span>
     </button>
 
-    <p class="note">
-      📱 سيتم إرسال طلبك إلى واتساب المتجر لتأكيده<br>
+    <p style="color:var(--muted);font-size:12px;text-align:center;margin-top:15px;line-height:1.7;">
+      📱 سيتم إرسال طلبك إلى واتساب المتجر<br>
       📧 كما سيصلك بريد إلكتروني بتفاصيل الطلب
     </p>
+
   </form>
+
 </div>
 
 <footer>
-  <div class="logo-small">BRAND LAND</div>
+  <div class="logo-small">👑 BRAND LAND</div>
   <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
-  <p>© 2026 جميع الحقوق محفوظة</p>
 </footer>
 
 <script src="script.js"></script>
@@ -132,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('orderForm').addEventListener('submit', handleOrderSubmit);
 });
 
-// عرض ملخص الطلب
 function renderOrderSummary(){
   const cart = getCart();
   const container = document.getElementById('orderSummary');
@@ -144,7 +103,7 @@ function renderOrderSummary(){
         لا توجد منتجات في السلة
       </p>
       <a href="index.html" style="text-decoration:none;">
-        <button class="btn-gold" style="width:100%;">ابدأ التسوق</button>
+        <button class="btn-primary" style="width:100%;">ابدأ التسوق</button>
       </a>
     `;
     return;
@@ -169,14 +128,13 @@ function renderOrderSummary(){
   container.innerHTML = `
     <h3>🛒 ملخص الطلب</h3>
     ${items}
-    <div class="order-total">
-      <span>المجموع الكلي</span>
-      <span>${total} SAR</span>
+    <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:2px solid var(--gold);margin-top:10px;">
+      <span style="color:var(--text);font-weight:700;">المجموع الكلي</span>
+      <span style="color:var(--gold-bright);font-weight:900;font-size:18px;">${total} SAR</span>
     </div>
   `;
 }
 
-// إرسال الطلب
 function handleOrderSubmit(e){
   e.preventDefault();
   
@@ -186,7 +144,6 @@ function handleOrderSubmit(e){
     return;
   }
 
-  // جمع البيانات
   const order = {
     id: Date.now(),
     orderNumber: generateOrderNumber(),
@@ -203,49 +160,38 @@ function handleOrderSubmit(e){
   };
 
   // حفظ الطلب
-  saveOrder(order);
+  const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('brandland_orders', JSON.stringify(orders));
 
-  // إرسال إلى WhatsApp
+  // إرسال إلى واتساب
   sendToWhatsApp(order);
 
-  // إرسال البريد الإلكتروني
+  // إرسال البريد
   sendEmailNotification(order);
 
   // تفريغ السلة
   localStorage.removeItem('brandland_cart');
-  updateCartCount();
+  if(typeof updateCartCount === 'function') updateCartCount();
 
-  // رسالة نجاح
-  showToast('✅ جاري تحويلك إلى واتساب...');
+  showToast('✅ جاري التحويل إلى واتساب...');
 
-  // الانتقال إلى صفحة النجاح
   setTimeout(() => {
     window.location.href = 'success.html?order=' + order.orderNumber;
   }, 2000);
 }
 
-// توليد رقم الطلب
 function generateOrderNumber(){
   const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
-  const nextNumber = orders.length + 1;
+  const nextNumber = orders.length;
   return 'BL' + String(nextNumber).padStart(4, '0');
 }
 
-// حفظ الطلب
-function saveOrder(order){
-  const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
-  orders.push(order);
-  localStorage.setItem('brandland_orders', JSON.stringify(orders));
-}
-
-// إرسال إلى WhatsApp
 function sendToWhatsApp(order){
-  // رقم الواتساب - يمكن تغييره من لوحة التحكم
   const settings = JSON.parse(localStorage.getItem('brandland_settings') || '{}');
   const whatsapp = settings.whatsapp || '+966507000000';
   const cleanNumber = whatsapp.replace(/[^0-9]/g, '');
 
-  // تجهيز الرسالة
   let message = `🛍️ *طلب جديد من BRAND LAND*\n\n`;
   message += `📋 *رقم الطلب:* ${order.orderNumber}\n`;
   message += `📅 *التاريخ:* ${new Date(order.date).toLocaleString('ar-SA')}\n\n`;
@@ -269,17 +215,14 @@ function sendToWhatsApp(order){
   message += `━━━━━━━━━━━━━━━━\n`;
   message += `شكراً لثقتك في BRAND LAND 👑`;
 
-  // فتح WhatsApp
   const url = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 }
 
-// إرسال البريد الإلكتروني
 function sendEmailNotification(order){
   const settings = JSON.parse(localStorage.getItem('brandland_settings') || '{}');
   const storeEmail = settings.storeEmail || 'mtjrzaya@gmail.com';
   
-  // تجهيز محتوى البريد
   const subject = `طلب جديد #${order.orderNumber} - BRAND LAND`;
   
   let body = `طلب جديد من BRAND LAND\n`;
@@ -293,7 +236,7 @@ function sendEmailNotification(order){
   body += `الجوال: ${order.customerPhone}\n`;
   body += `المدينة: ${order.city}\n`;
   body += `الحي: ${order.district}\n`;
-  body += `العنوان الوطني: ${order.address}\n`;
+  body += `العنوان: ${order.address}\n`;
   if(order.notes) body += `ملاحظات: ${order.notes}\n`;
   body += `\n`;
 
@@ -304,18 +247,16 @@ function sendEmailNotification(order){
     body += `   الكمية: ${item.qty}\n`;
     body += `   السعر: ${item.price} SAR\n`;
     body += `   الإجمالي: ${item.qty * item.price} SAR\n`;
-    body += `   صورة: ${item.image || 'غير متوفرة'}\n\n`;
+    if(item.image) body += `   صورة: ${item.image}\n`;
+    body += `\n`;
   });
   
   body += `💰 المجموع الكلي: ${order.total} SAR\n\n`;
   body += `════════════════════\n`;
   body += `BRAND LAND - متجر إلكتروني\n`;
-  body += `شكراً لثقتك بنا 👑`;
 
-  // فتح البريد الإلكتروني
   const mailtoUrl = `mailto:${storeEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   
-  // فتح في نافذة جديدة
   setTimeout(() => {
     window.open(mailtoUrl, '_blank');
   }, 1000);

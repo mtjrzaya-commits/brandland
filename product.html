@@ -3,23 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>جهاز تحفيز نقطة الجي والبظر | BRAND LAND</title>
+<title>لعبة الحقيقة والجرأة | BRAND LAND</title>
 <link rel="stylesheet" href="style.css">
-<style>
-  .detail-wrapper{position:relative;}
-  .main-image{
-    width:100%;aspect-ratio:1/1;object-fit:cover;
-    background:var(--card);
-  }
-  .image-overlay-btns{position:absolute;top:0;left:0;right:0;}
-</style>
 </head>
 <body>
 
-<!-- ===== الهيدر ===== -->
 <header>
   <div class="header-left">
-    <button class="icon-btn" onclick="location.href='index.html'">←</button>
+    <button class="icon-btn" onclick="history.back()">←</button>
   </div>
   <div class="logo-center">
     <span class="crown">👑</span>
@@ -35,44 +26,33 @@
   </div>
 </header>
 
-<!-- ===== صفحة المنتج ===== -->
 <div class="product-detail">
-
   <div class="detail-wrapper">
     <img class="main-image" 
-         src="https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=600" 
-         alt="جهاز تحفيز نقطة الجي والبظر">
-    
-    <button class="back-btn" onclick="location.href='index.html'">←</button>
+         src="https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=800" 
+         alt="لعبة الحقيقة والجرأة للزوجين"
+         onerror="this.src='https://via.placeholder.com/600x600/D4AF37/000000?text=BRAND+LAND'">
+    <button class="back-btn" onclick="history.back()">←</button>
     <button class="share-btn" onclick="shareProduct()">↗</button>
   </div>
 
   <div class="product-info-detail">
-    <h1>جهاز تحفيز نقطة الجي والبظر – ألعاب زوجية</h1>
+    <h1>لعبة الحقيقة والجرأة للزوجين</h1>
 
     <div class="rating">
       <span class="stars">★★★★★</span>
       <span class="count">(124)</span>
     </div>
 
-    <div class="price-big">
-      149 SAR
-      <small>199 SAR</small>
-    </div>
+    <div class="price-big">109 SAR</div>
 
     <!-- اللون -->
     <div class="option-group">
       <label>اللون</label>
       <div class="color-options">
-        <div class="color-dot active" 
-             style="background:#C0392B;" 
-             onclick="selectColor(this)"></div>
-        <div class="color-dot" 
-             style="background:#1a1a1a;border:1px solid #444;" 
-             onclick="selectColor(this)"></div>
-        <div class="color-dot" 
-             style="background:#F5C6CB;" 
-             onclick="selectColor(this)"></div>
+        <div class="color-dot active" style="background:#C0392B;" onclick="selectColor(this)"></div>
+        <div class="color-dot" style="background:#1a1a1a;border:1px solid #444;" onclick="selectColor(this)"></div>
+        <div class="color-dot" style="background:#F5C6CB;" onclick="selectColor(this)"></div>
       </div>
     </div>
 
@@ -87,60 +67,51 @@
       </div>
     </div>
 
-    <!-- الأزرار -->
-    <div style="display:flex;flex-direction:column;gap:10px;margin-top:25px;">
-      <button class="btn-primary" onclick="addProductToCart()">
-        🛒 أضف إلى السلة
-      </button>
-      <button class="btn-secondary" onclick="orderProductNow()">
-        ⚡ اطلب الآن
-      </button>
-    </div>
+    <button class="btn-primary" onclick="addProductToCart()">
+      🛒 أضف إلى السلة
+    </button>
+    <button class="btn-secondary" onclick="orderProductNow()">
+      ⚡ اطلب الآن
+    </button>
 
     <!-- وصف المنتج -->
-    <div style="margin-top:35px;padding:20px;background:var(--card);border-radius:12px;border-right:4px solid var(--gold);">
-      <h3 style="color:var(--gold);margin-bottom:12px;font-size:16px;">وصف المنتج</h3>
-      <p style="color:var(--text);font-size:14px;margin-bottom:12px;">
-        اكتشف سحر المتعة الزوجية مع هذا الجهاز المصمم خصيصاً لتعزيز الإثارة والوصول إلى النشوة بطريقة ممتعة وآمنة.
+    <div style="margin-top:30px;background:linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);padding:20px;border-radius:14px;border:1.5px solid rgba(212,175,55,0.3);border-right:4px solid var(--gold);">
+      <h3 style="color:var(--gold);margin-bottom:12px;font-size:16px;font-weight:900;">📝 وصف المنتج</h3>
+      <p style="color:var(--text);font-size:14px;margin-bottom:12px;line-height:1.8;">
+        لعبة الحقيقة والجرأة للزوجين — تجربة ممتعة لتعزيز العلاقة الزوجية وخلق لحظات لا تُنسى بينكما.
       </p>
-      <p style="color:var(--text);font-size:14px;margin-bottom:12px;">
-        <strong style="color:var(--gold);">المميزات:</strong>
-      </p>
-      <ul style="color:var(--text);font-size:14px;padding-right:20px;line-height:1.9;">
-        <li>تصميم أنيق ومريح</li>
+      <p style="color:var(--gold);font-weight:900;margin-bottom:8px;">✨ المميزات:</p>
+      <ul style="color:var(--text);font-size:14px;padding-right:20px;line-height:2;">
+        <li>تصميم أنيق واحترافي</li>
         <li>مواد آمنة 100%</li>
-        <li>سهل الاستخدام والتنظيف</li>
-        <li>مناسب للسفر والتخزين</li>
+        <li>مناسبة لكل الأزواج</li>
+        <li>هدية مثالية</li>
       </ul>
     </div>
 
     <!-- شارات الثقة -->
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px;">
-      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
-        <div style="font-size:22px;margin-bottom:5px;">🔒</div>
+      <div style="text-align:center;padding:14px;background:linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);border-radius:12px;border:1.5px solid rgba(212,175,55,0.3);">
+        <div style="font-size:24px;margin-bottom:6px;">🔒</div>
         <div style="font-size:11px;color:var(--muted);">دفع آمن</div>
       </div>
-      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
-        <div style="font-size:22px;margin-bottom:5px;">🚚</div>
+      <div style="text-align:center;padding:14px;background:linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);border-radius:12px;border:1.5px solid rgba(212,175,55,0.3);">
+        <div style="font-size:24px;margin-bottom:6px;">🚚</div>
         <div style="font-size:11px;color:var(--muted);">توصيل سريع</div>
       </div>
-      <div style="text-align:center;padding:12px;background:var(--card);border-radius:10px;border:1px solid var(--border);">
-        <div style="font-size:22px;margin-bottom:5px;">✅</div>
+      <div style="text-align:center;padding:14px;background:linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);border-radius:12px;border:1.5px solid rgba(212,175,55,0.3);">
+        <div style="font-size:24px;margin-bottom:6px;">✅</div>
         <div style="font-size:11px;color:var(--muted);">أصلي 100%</div>
       </div>
     </div>
-
   </div>
 </div>
 
-<!-- ===== الفوتر ===== -->
 <footer>
-  <div class="logo-small">BRAND LAND</div>
+  <div class="logo-small">👑 BRAND LAND</div>
   <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
-  <p>© 2026 جميع الحقوق محفوظة</p>
 </footer>
 
-<!-- ===== الشريط السفلي ===== -->
 <nav class="bottom-nav">
   <a href="index.html">
     <span class="nav-icon">🏠</span>
@@ -154,7 +125,7 @@
     <span class="nav-icon">♡</span>
     <span>المفضلة</span>
   </a>
-  <a href="checkout.html">
+  <a href="account.html">
     <span class="nav-icon">👤</span>
     <span>حسابي</span>
   </a>
@@ -162,34 +133,29 @@
 
 <script src="script.js"></script>
 <script>
-// ===== بيانات المنتج =====
 const PRODUCT = {
   id: 1,
-  name: 'جهاز تحفيز نقطة الجي والبظر – ألعاب زوجية',
-  price: 149,
-  image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=600'
+  name: 'لعبة الحقيقة والجرأة للزوجين',
+  price: 109,
+  image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=800'
 };
 
-// اختيار اللون
 function selectColor(el){
   document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
   el.classList.add('active');
 }
 
-// اختيار الحجم
 function selectSize(el){
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
 }
 
-// إضافة إلى السلة
 function addProductToCart(){
   if(typeof addToCart === 'function'){
     addToCart(PRODUCT, 1);
   }
 }
 
-// اطلب الآن
 function orderProductNow(){
   if(typeof addToCart === 'function'){
     addToCart(PRODUCT, 1);
@@ -197,7 +163,6 @@ function orderProductNow(){
   }
 }
 
-// مشاركة المنتج
 function shareProduct(){
   const url = window.location.href;
   if(navigator.share){
@@ -207,7 +172,6 @@ function shareProduct(){
       url: url
     }).catch(() => {});
   } else {
-    // نسخ الرابط
     navigator.clipboard.writeText(url).then(() => {
       if(typeof showToast === 'function'){
         showToast('✅ تم نسخ الرابط');

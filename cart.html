@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سلة التسوق | BRAND LAND</title>
+<title>السلة | BRAND LAND</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ===== الهيدر ===== -->
 <header>
   <div class="header-left">
     <button class="icon-btn" onclick="location.href='index.html'">←</button>
@@ -27,11 +26,10 @@
   </div>
 </header>
 
-<!-- ===== صفحة السلة ===== -->
 <div class="cart-page">
-
+  
   <div class="cart-header">
-    <h1>سلة التسوق</h1>
+    <h1>🛒 سلة التسوق</h1>
     <button class="clear-btn" onclick="clearCart()" title="حذف الكل">🗑</button>
   </div>
 
@@ -43,7 +41,7 @@
       <span class="amount" id="totalAmount">0 SAR</span>
     </div>
 
-    <a href="checkout.html">
+    <a href="checkout.html" style="text-decoration:none;">
       <button class="btn-primary" style="margin-top:20px;">
         ← إتمام الطلب
       </button>
@@ -52,14 +50,12 @@
 
 </div>
 
-<!-- ===== الفوتر ===== -->
 <footer>
-  <div class="logo-small">BRAND LAND</div>
+  <div class="logo-small">👑 BRAND LAND</div>
   <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
   <p>© 2026 جميع الحقوق محفوظة</p>
 </footer>
 
-<!-- ===== الشريط السفلي ===== -->
 <nav class="bottom-nav">
   <a href="index.html">
     <span class="nav-icon">🏠</span>
@@ -73,7 +69,7 @@
     <span class="nav-icon">♡</span>
     <span>المفضلة</span>
   </a>
-  <a href="checkout.html">
+  <a href="account.html">
     <span class="nav-icon">👤</span>
     <span>حسابي</span>
   </a>
@@ -81,20 +77,19 @@
 
 <script src="script.js"></script>
 <script>
-// ===== عرض السلة =====
 function renderCart(){
   const cart = getCart();
   const itemsDiv = document.getElementById('cartItems');
   const summary = document.getElementById('cartSummary');
   const totalEl = document.getElementById('totalAmount');
 
-  // إذا السلة فارغة
   if(!cart || cart.length === 0){
     itemsDiv.innerHTML = `
       <div class="empty-cart">
-        <div class="icon">🛒</div>
-        <p>سلة التسوق فارغة</p>
-        <a href="index.html">
+        <span class="icon">🛒</span>
+        <h3>سلة التسوق فارغة</h3>
+        <p>ابدأ التسوق وأضف منتجاتك المفضلة</p>
+        <a href="index.html" style="text-decoration:none;">
           <button class="btn-primary">ابدأ التسوق</button>
         </a>
       </div>
@@ -103,13 +98,14 @@ function renderCart(){
     return;
   }
 
-  // عرض المنتجات
   let total = 0;
   itemsDiv.innerHTML = cart.map(item => {
     total += item.price * item.qty;
     return `
       <div class="cart-item">
-        <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80x80/D4AF37/000000?text=P'">
+        <img src="${item.image || 'https://via.placeholder.com/80x80/D4AF37/000000?text=P'}" 
+             alt="${item.name}"
+             onerror="this.src='https://via.placeholder.com/80x80/D4AF37/000000?text=P'">
         <div class="cart-item-info">
           <h3>${item.name}</h3>
           <div class="item-price">${item.price} SAR</div>
@@ -128,13 +124,11 @@ function renderCart(){
   summary.style.display = 'block';
 }
 
-// حذف منتج
 function deleteItem(id){
   removeFromCart(id);
   renderCart();
 }
 
-// تفريغ السلة
 function clearCart(){
   if(confirm('هل تريد حذف جميع المنتجات من السلة؟')){
     localStorage.removeItem('brandland_cart');
@@ -144,7 +138,6 @@ function clearCart(){
   }
 }
 
-// عند التحميل
 document.addEventListener('DOMContentLoaded', renderCart);
 </script>
 

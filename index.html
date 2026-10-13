@@ -37,11 +37,11 @@
     <span class="logo-text">BRAND LAND</span>
   </div>
   <nav>
-    <a href="index.html"><span>الرئيسية</span><span class="arrow">‹</span></a>
-    <a href="categories.html"><span>الأقسام</span><span class="arrow">‹</span></a>
-    <a href="cart.html"><span>المفضلة</span><span class="arrow">‹</span></a>
-    <a href="account.html"><span>حسابي</span><span class="arrow">‹</span></a>
-    <a href="mailto:mtjrzaya@gmail.com"><span>تواصل معنا</span><span class="arrow">‹</span></a>
+    <a href="index.html"><span>🏠 الرئيسية</span><span class="arrow">‹</span></a>
+    <a href="categories.html"><span>🏷️ الأقسام</span><span class="arrow">‹</span></a>
+    <a href="cart.html"><span>♡ المفضلة</span><span class="arrow">‹</span></a>
+    <a href="account.html"><span>👤 حسابي</span><span class="arrow">‹</span></a>
+    <a href="mailto:mtjrzaya@gmail.com"><span>🎧 تواصل معنا</span><span class="arrow">‹</span></a>
   </nav>
   <div class="side-menu-footer">
     <p>معاً .. كل لحظة أجمل ♡</p>
@@ -54,7 +54,7 @@
   <input type="text" placeholder="ابحث عن العاب زوجية، أدوات، أو أي منتج آخر...">
 </div>
 
-<!-- البانر -->
+<!-- البانر الرئيسي -->
 <div class="hero-banner">
   <div class="hero-content">
     <h1>ألعاب زوجية</h1>
@@ -80,7 +80,7 @@
   </div>
   <div class="cat-circle" onclick="location.href='categories.html'">
     <div class="circle">🎁</div>
-    <span>هدايا رومانسية</span>
+    <span>هدايا رومانسية خاصة</span>
   </div>
   <div class="cat-circle" onclick="location.href='categories.html'">
     <div class="circle">🔥</div>
@@ -125,32 +125,32 @@
 const PRODUCTS = [
   {
     id: 1,
-    name: 'لعبة الحقيقة والجرأة للزوجين',
-    price: 109,
+    name: 'لعبة الحقيقة والجرأة',
+    price: 18,
     image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=500',
     rating: 5,
     reviews: 124
   },
   {
     id: 2,
-    name: 'قيود جلدية للزوجين',
-    price: 69,
+    name: 'أصفاد الحب الزوجية',
+    price: 21,
     image: 'https://images.unsplash.com/photo-1587304847864-21e50e1e0c88?w=500',
     rating: 4,
     reviews: 86
   },
   {
     id: 3,
-    name: 'زهر الإنارة للزوجين',
-    price: 72,
+    name: 'زهر الحب الزوجية',
+    price: 19,
     image: 'https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=500',
     rating: 5,
     reviews: 92
   },
   {
     id: 4,
-    name: 'أداة تحفيز مزدوجة',
-    price: 149,
+    name: 'قناع العيون',
+    price: 16,
     image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500',
     rating: 5,
     reviews: 145
@@ -163,12 +163,12 @@ function renderProducts(){
   grid.innerHTML = PRODUCTS.map(p => `
     <div class="product-card">
       <div class="product-img-wrap">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300/D4AF37/000000?text=BRAND+LAND'">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300/8B0000/FFFFFF?text=BRAND+LAND'">
         <div class="heart-icon" onclick="event.stopPropagation(); this.classList.toggle('active')">♡</div>
       </div>
       <div class="product-info">
         <h3>${p.name}</h3>
-        <div class="price">${p.price} SAR</div>
+        <div class="price">$${p.price}</div>
         <div class="product-actions">
           <button class="btn-add-cart" onclick="event.stopPropagation(); addToCartItem(${p.id})">
             🛒 أضف إلى السلة

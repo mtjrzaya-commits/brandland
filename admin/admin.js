@@ -1,8 +1,28 @@
-/* ===== BRAND LAND ADMIN - الوظائف الرئيسية ===== */
+/* ===== BRAND LAND ADMIN - مع Firebase Authentication ===== */
 
-const ADMIN_EMAIL = 'mtjrzaya@gmail.com';
-const ADMIN_PASSWORD = 'brandland2026';
+// ===== Firebase SDK =====
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { 
+  getAuth, 
+  signInWithEmailAndPassword, 
+  signOut,
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+// ===== إعدادات Firebase =====
+const firebaseConfig = {
+  apiKey: "AIzaSyDRADYfXqdPxwVrN49XcWeYT6YhMnPvbLk",
+  authDomain: "brandland-fe63e.firebaseapp.com",
+  projectId: "brandland-fe63e",
+  storageBucket: "brandland-fe63e.firebasestorage.app",
+  messagingSenderId: "119294456074",
+  appId: "1:119294456074:web:51af845d725776aa924af3"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// ===== الإعدادات الافتراضية =====
 const DEFAULT_SETTINGS = {
   storeName: 'BRAND LAND',
   storeEmail: 'mtjrzaya@gmail.com',
@@ -17,6 +37,7 @@ const DEFAULT_SETTINGS = {
   shippingCost: 25
 };
 
+// ===== إدارة البيانات =====
 function getData(key, defaultValue = []){
   try{
     const data = localStorage.getItem('brandland_' + key);
@@ -30,16 +51,22 @@ function saveData(key, value){
   localStorage.setItem('brandland_' + key, JSON.stringify(value));
 }
 
-function login(email, password){
-  if(email === ADMIN_EMAIL && password === ADMIN_PASSWORD){
+// ===== تسجيل الدخول بـ Firebase =====
+async function login(email, password){
+  try{
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
     localStorage.setItem('brandland_logged_in', 'true');
-    localStorage.setItem('brandland_user_email', email);
-    return true;
+    localStorage.setItem('brandland_user_email', userCredential.user.email);
+    return { success: true };
+  }catch(error){
+    return { success: false, error: error.code };
   }
-  return false;
 }
 
-function logout(){
+async function logout(){
+  try{
+    await signOut(auth);
+  }catch(e){}
   localStorage.removeItem('brandland_logged_in');
   localStorage.removeItem('brandland_user_email');
   window.location.href = 'login.html';
@@ -57,6 +84,18 @@ function checkAuth(){
   return true;
 }
 
+// ===== مراقبة تسجيل الدخول =====
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    localStorage.setItem('brandland_logged_in', 'true');
+    localStorage.setItem('brandland_user_email', user.email);
+  } else {
+    localStorage.removeItem('brandland_logged_in');
+    localStorage.removeItem('brandland_user_email');
+  }
+});
+
+// ===== الإشعارات =====
 function showToast(message, type = 'success'){
   let toast = document.getElementById('toast');
   if(!toast){
@@ -73,6 +112,7 @@ function showToast(message, type = 'success'){
   }, 2500);
 }
 
+// ===== القائمة الجانبية =====
 function toggleSidebar(){
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('overlay');
@@ -80,6 +120,7 @@ function toggleSidebar(){
   if(overlay) overlay.classList.toggle('show');
 }
 
+// ===== المنتجات =====
 function getProducts(){ return getData('products'); }
 function saveProducts(products){ saveData('products', products); }
 
@@ -113,6 +154,7 @@ function deleteProduct(id){
   return true;
 }
 
+// ===== الأقسام =====
 function getCategories(){ return getData('categories'); }
 function saveCategories(categories){ saveData('categories', categories); }
 
@@ -146,6 +188,7 @@ function deleteCategory(id){
   return true;
 }
 
+// ===== البانرات =====
 function getBanners(){ return getData('banners'); }
 function saveBanners(banners){ saveData('banners', banners); }
 
@@ -179,6 +222,7 @@ function deleteBanner(id){
   return true;
 }
 
+// ===== الطلبات =====
 function getOrders(){ return getData('orders'); }
 function saveOrders(orders){ saveData('orders', orders); }
 
@@ -202,6 +246,7 @@ function deleteOrder(id){
   return true;
 }
 
+// ===== العملاء =====
 function getCustomers(){ return getData('customers'); }
 function saveCustomers(customers){ saveData('customers', customers); }
 
@@ -213,6 +258,7 @@ function deleteCustomer(id){
   return true;
 }
 
+// ===== الإعدادات =====
 function getSettings(){
   const saved = getData('settings', null);
   return saved ? {...DEFAULT_SETTINGS, ...saved} : DEFAULT_SETTINGS;
@@ -229,6 +275,7 @@ function updateSettings(key, value){
   saveSettings(settings);
 }
 
+// ===== الإحصائيات =====
 function getStats(){
   const products = getProducts();
   const orders = getOrders();
@@ -252,6 +299,7 @@ function getStats(){
   };
 }
 
+// ===== الأدوات =====
 function formatPrice(price){
   return (price || 0) + ' SAR';
 }
@@ -270,6 +318,7 @@ function escapeHtml(text){
   return div.innerHTML;
 }
 
+// ===== تهيئة القائمة الجانبية =====
 function initSidebar(){
   const menuBtn = document.getElementById('menuBtn');
   if(menuBtn){
@@ -281,6 +330,41 @@ function initSidebar(){
   }
 }
 
+// ===== عند تحميل الصفحة =====
 document.addEventListener('DOMContentLoaded', function(){
   initSidebar();
 });
+
+// ===== تصدير الدوال للاستخدام العالمي =====
+window.login = login;
+window.logout = logout;
+window.isLoggedIn = isLoggedIn;
+window.checkAuth = checkAuth;
+window.showToast = showToast;
+window.toggleSidebar = toggleSidebar;
+window.getProducts = getProducts;
+window.addProduct = addProduct;
+window.updateProduct = updateProduct;
+window.deleteProduct = deleteProduct;
+window.getCategories = getCategories;
+window.addCategory = addCategory;
+window.updateCategory = updateCategory;
+window.deleteCategory = deleteCategory;
+window.getBanners = getBanners;
+window.addBanner = addBanner;
+window.updateBanner = updateBanner;
+window.deleteBanner = deleteBanner;
+window.getOrders = getOrders;
+window.saveOrders = saveOrders;
+window.updateOrderStatus = updateOrderStatus;
+window.deleteOrder = deleteOrder;
+window.getCustomers = getCustomers;
+window.saveCustomers = saveCustomers;
+window.deleteCustomer = deleteCustomer;
+window.getSettings = getSettings;
+window.saveSettings = saveSettings;
+window.updateSettings = updateSettings;
+window.getStats = getStats;
+window.formatPrice = formatPrice;
+window.formatDate = formatDate;
+window.escapeHtml = escapeHtml;

@@ -1,13 +1,4 @@
-/* ===== BRAND LAND ADMIN - مع Firebase Authentication ===== */
-
-// ===== Firebase SDK =====
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { 
-  getAuth, 
-  signInWithEmailAndPassword, 
-  signOut,
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+/* ===== BRAND LAND ADMIN - مع Firebase Authentication (SDK القديم) ===== */
 
 // ===== إعدادات Firebase =====
 const firebaseConfig = {
@@ -19,8 +10,44 @@ const firebaseConfig = {
   appId: "1:119294456074:web:51af845d725776aa924af3"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+// ===== تحميل Firebase تلقائياً =====
+(function loadFirebase(){
+  if(typeof firebase === 'undefined'){
+    const scripts = [
+      'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
+      'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'
+    ];
+    
+    let loaded = 0;
+    scripts.forEach(src => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => {
+        loaded++;
+        if(loaded === scripts.length){
+          initFirebase();
+        }
+      };
+      document.head.appendChild(s);
+    });
+  } else {
+    initFirebase();
+  }
+})();
+
+let firebaseAuth = null;
+
+function initFirebase(){
+  try {
+    if(!firebase.apps.length){
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebaseAuth = firebase.auth();
+    console.log('✅ Firebase initialized successfully');
+  } catch(e){
+    console.error('❌ Firebase init error:', e);
+  }
+}
 
 // ===== الإعدادات الافتراضية =====
 const DEFAULT_SETTINGS = {
@@ -52,21 +79,29 @@ function saveData(key, value){
 }
 
 // ===== تسجيل الدخول بـ Firebase =====
-async function login(email, password){
-  try{
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    localStorage.setItem('brandland_logged_in', 'true');
-    localStorage.setItem('brandland_user_email', userCredential.user.email);
-    return { success: true };
-  }catch(error){
-    return { success: false, error: error.code };
-  }
+function login(email, password){
+  return new Promise((resolve) => {
+    if(!firebaseAuth){
+      resolve({ success: false, error: 'Firebase غير محمّل بعد' });
+      return;
+    }
+    
+    firebaseAuth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        localStorage.setItem('brandland_logged_in', 'true');
+        localStorage.setItem('brandland_user_email', userCredential.user.email);
+        resolve({ success: true });
+      })
+      .catch((error) => {
+        resolve({ success: false, error: error.code });
+      });
+  });
 }
 
-async function logout(){
-  try{
-    await signOut(auth);
-  }catch(e){}
+function logout(){
+  if(firebaseAuth){
+    firebaseAuth.signOut().catch(() => {});
+  }
   localStorage.removeItem('brandland_logged_in');
   localStorage.removeItem('brandland_user_email');
   window.location.href = 'login.html';
@@ -83,17 +118,6 @@ function checkAuth(){
   }
   return true;
 }
-
-// ===== مراقبة تسجيل الدخول =====
-onAuthStateChanged(auth, (user) => {
-  if(user){
-    localStorage.setItem('brandland_logged_in', 'true');
-    localStorage.setItem('brandland_user_email', user.email);
-  } else {
-    localStorage.removeItem('brandland_logged_in');
-    localStorage.removeItem('brandland_user_email');
-  }
-});
 
 // ===== الإشعارات =====
 function showToast(message, type = 'success'){
@@ -334,37 +358,3 @@ function initSidebar(){
 document.addEventListener('DOMContentLoaded', function(){
   initSidebar();
 });
-
-// ===== تصدير الدوال للاستخدام العالمي =====
-window.login = login;
-window.logout = logout;
-window.isLoggedIn = isLoggedIn;
-window.checkAuth = checkAuth;
-window.showToast = showToast;
-window.toggleSidebar = toggleSidebar;
-window.getProducts = getProducts;
-window.addProduct = addProduct;
-window.updateProduct = updateProduct;
-window.deleteProduct = deleteProduct;
-window.getCategories = getCategories;
-window.addCategory = addCategory;
-window.updateCategory = updateCategory;
-window.deleteCategory = deleteCategory;
-window.getBanners = getBanners;
-window.addBanner = addBanner;
-window.updateBanner = updateBanner;
-window.deleteBanner = deleteBanner;
-window.getOrders = getOrders;
-window.saveOrders = saveOrders;
-window.updateOrderStatus = updateOrderStatus;
-window.deleteOrder = deleteOrder;
-window.getCustomers = getCustomers;
-window.saveCustomers = saveCustomers;
-window.deleteCustomer = deleteCustomer;
-window.getSettings = getSettings;
-window.saveSettings = saveSettings;
-window.updateSettings = updateSettings;
-window.getStats = getStats;
-window.formatPrice = formatPrice;
-window.formatDate = formatDate;
-window.escapeHtml = escapeHtml;

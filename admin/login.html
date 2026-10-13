@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <button type="submit" class="login-btn">
+      <button type="submit" class="login-btn" id="submitBtn">
         🚀 تسجيل الدخول
       </button>
     </form>
@@ -54,6 +54,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   
+  // إذا كان مسجل الدخول بالفعل، انتقل للوحة
   if(typeof isLoggedIn === 'function' && isLoggedIn()){
     window.location.href = 'dashboard.html';
     return;
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const form = document.getElementById('loginForm');
   const errorBox = document.getElementById('errorBox');
+  const submitBtn = document.getElementById('submitBtn');
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -69,17 +71,35 @@ document.addEventListener('DOMContentLoaded', function(){
     const password = document.getElementById('password').value;
 
     errorBox.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = '⏳ جاري التحقق...';
 
-    if(typeof login === 'function' && login(email, password)){
-      if(typeof showToast === 'function'){
-        showToast('✅ مرحباً بك!');
-      }
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 500);
+    // استدعاء دالة login من admin.js
+    if(typeof login === 'function'){
+      login(email, password).then(result => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚀 تسجيل الدخول';
+
+        if(result.success){
+          if(typeof showToast === 'function'){
+            showToast('✅ مرحباً بك!');
+          }
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 500);
+        } else {
+          errorBox.style.display = 'block';
+          document.getElementById('password').value = '';
+        }
+      }).catch(err => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = '🚀 تسجيل الدخول';
+        errorBox.style.display = 'block';
+      });
     } else {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 تسجيل الدخول';
       errorBox.style.display = 'block';
-      document.getElementById('password').value = '';
     }
   });
 

@@ -29,7 +29,7 @@
 <div class="cart-page">
   
   <div class="cart-header">
-    <h1>🛒 سلة التسوق</h1>
+    <h1>🛒 سلة المشتريات</h1>
     <button class="clear-btn" onclick="clearCart()" title="حذف الكل">🗑</button>
   </div>
 
@@ -87,7 +87,7 @@ function renderCart(){
     itemsDiv.innerHTML = `
       <div class="empty-cart">
         <span class="icon">🛒</span>
-        <h3>سلة التسوق فارغة</h3>
+        <h3>سلة المشتريات فارغة</h3>
         <p>ابدأ التسوق وأضف منتجاتك المفضلة</p>
         <a href="index.html" style="text-decoration:none;">
           <button class="btn-primary">ابدأ التسوق</button>
@@ -103,12 +103,12 @@ function renderCart(){
     total += item.price * item.qty;
     return `
       <div class="cart-item">
-        <img src="${item.image || 'https://via.placeholder.com/80x80/D4AF37/000000?text=P'}" 
+        <img src="${item.image || 'https://via.placeholder.com/80x80/8B0000/FFFFFF?text=P'}" 
              alt="${item.name}"
-             onerror="this.src='https://via.placeholder.com/80x80/D4AF37/000000?text=P'">
+             onerror="this.src='https://via.placeholder.com/80x80/8B0000/FFFFFF?text=P'">
         <div class="cart-item-info">
           <h3>${item.name}</h3>
-          <div class="item-price">${item.price} SAR</div>
+          <div class="item-price">$${item.price}</div>
           <div class="qty-controls">
             <button onclick="updateQty(${item.id}, -1)">−</button>
             <span>${item.qty}</span>
@@ -120,7 +120,7 @@ function renderCart(){
     `;
   }).join('');
 
-  totalEl.textContent = total + ' SAR';
+  totalEl.textContent = '$' + total;
   summary.style.display = 'block';
 }
 

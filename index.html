@@ -10,6 +10,7 @@
 </head>
 <body>
 
+<!-- الهيدر -->
 <header>
   <div class="header-left">
     <button class="icon-btn" onclick="toggleMenu()">☰</button>
@@ -28,6 +29,7 @@
   </div>
 </header>
 
+<!-- القائمة الجانبية -->
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 <aside class="side-menu" id="sideMenu">
   <div class="side-menu-header">
@@ -35,23 +37,24 @@
     <span class="logo-text">BRAND LAND</span>
   </div>
   <nav>
-    <a href="index.html"><span>الرئيسية</span><span class="arrow">›</span></a>
-    <a href="categories.html"><span>الأقسام</span><span class="arrow">›</span></a>
-    <a href="product.html"><span>الألعاب</span><span class="arrow">›</span></a>
-    <a href="cart.html"><span>المفضلة</span><span class="arrow">›</span></a>
-    <a href="checkout.html"><span>حسابي</span><span class="arrow">›</span></a>
-    <a href="mailto:mtjrzaya@gmail.com"><span>تواصل معنا</span><span class="arrow">›</span></a>
+    <a href="index.html"><span>الرئيسية</span><span class="arrow">‹</span></a>
+    <a href="categories.html"><span>الأقسام</span><span class="arrow">‹</span></a>
+    <a href="cart.html"><span>المفضلة</span><span class="arrow">‹</span></a>
+    <a href="account.html"><span>حسابي</span><span class="arrow">‹</span></a>
+    <a href="mailto:mtjrzaya@gmail.com"><span>تواصل معنا</span><span class="arrow">‹</span></a>
   </nav>
   <div class="side-menu-footer">
     <p>معاً .. كل لحظة أجمل ♡</p>
   </div>
 </aside>
 
+<!-- البحث -->
 <div class="search-bar">
   <span class="icon">🔍</span>
   <input type="text" placeholder="ابحث عن العاب زوجية، أدوات، أو أي منتج آخر...">
 </div>
 
+<!-- البانر -->
 <div class="hero-banner">
   <div class="hero-content">
     <h1>ألعاب زوجية</h1>
@@ -61,6 +64,7 @@
   </div>
 </div>
 
+<!-- الأقسام الدائرية -->
 <div class="categories-circle">
   <div class="cat-circle" onclick="location.href='categories.html'">
     <div class="circle">💗</div>
@@ -84,16 +88,19 @@
   </div>
 </div>
 
+<!-- أفضل المنتجات -->
 <h2 class="section-title">♡ أفضل المنتجات ♡</h2>
 
 <div class="products-grid" id="productsGrid"></div>
 
+<!-- الفوتر -->
 <footer>
-  <div class="logo-small">BRAND LAND</div>
+  <div class="logo-small">👑 BRAND LAND</div>
   <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
   <p>© 2026 جميع الحقوق محفوظة</p>
 </footer>
 
+<!-- الشريط السفلي -->
 <nav class="bottom-nav">
   <a href="index.html" class="active">
     <span class="nav-icon">🏠</span>
@@ -107,7 +114,7 @@
     <span class="nav-icon">♡</span>
     <span>المفضلة</span>
   </a>
-  <a href="checkout.html">
+  <a href="account.html">
     <span class="nav-icon">👤</span>
     <span>حسابي</span>
   </a>
@@ -120,7 +127,7 @@ const PRODUCTS = [
     id: 1,
     name: 'لعبة الحقيقة والجرأة للزوجين',
     price: 109,
-    image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=400',
+    image: 'https://images.unsplash.com/photo-1606166187734-a4cb74079037?w=500',
     rating: 5,
     reviews: 124
   },
@@ -128,7 +135,7 @@ const PRODUCTS = [
     id: 2,
     name: 'قيود جلدية للزوجين',
     price: 69,
-    image: 'https://images.unsplash.com/photo-1587304847864-21e50e1e0c88?w=400',
+    image: 'https://images.unsplash.com/photo-1587304847864-21e50e1e0c88?w=500',
     rating: 4,
     reviews: 86
   },
@@ -136,7 +143,7 @@ const PRODUCTS = [
     id: 3,
     name: 'زهر الإنارة للزوجين',
     price: 72,
-    image: 'https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=400',
+    image: 'https://images.unsplash.com/photo-1595429035839-c99c298ffdde?w=500',
     rating: 5,
     reviews: 92
   },
@@ -144,7 +151,7 @@ const PRODUCTS = [
     id: 4,
     name: 'أداة تحفيز مزدوجة',
     price: 149,
-    image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=400',
+    image: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=500',
     rating: 5,
     reviews: 145
   }
@@ -152,10 +159,11 @@ const PRODUCTS = [
 
 function renderProducts(){
   const grid = document.getElementById('productsGrid');
+  if(!grid) return;
   grid.innerHTML = PRODUCTS.map(p => `
     <div class="product-card">
       <div class="product-img-wrap">
-        <img src="${p.image}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/300x300/D4AF37/000000?text=Brand+Land'">
+        <img src="${p.image}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/300x300/D4AF37/000000?text=BRAND+LAND'">
         <div class="heart-icon" onclick="event.stopPropagation(); this.classList.toggle('active')">♡</div>
       </div>
       <div class="product-info">

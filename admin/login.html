@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>تسجيل الدخول | BRAND LAND</title>
 <link rel="stylesheet" href="admin.css">
+
+<!-- Firebase SDK - تحميل مباشر -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
 
@@ -19,6 +23,10 @@
 
     <div class="login-error" id="errorBox">
       ⚠️ البريد الإلكتروني أو كلمة المرور غير صحيحة
+    </div>
+
+    <div class="login-error" id="loadingBox" style="display:none;background:rgba(52,152,219,0.15);border-color:#3498DB;color:#5DADE2;">
+      ⏳ جاري التحقق من Firebase...
     </div>
 
     <form id="loginForm" autocomplete="off">
@@ -50,19 +58,49 @@
   </div>
 </div>
 
-<script src="admin.js"></script>
+<!-- Firebase Config - تحميل مباشر بدون admin.js -->
 <script>
+// ===== إعدادات Firebase =====
+const firebaseConfig = {
+  apiKey: "AIzaSyDRADYfXqdPxwVrN49XcWeYT6YhMnPvbLk",
+  authDomain: "brandland-fe63e.firebaseapp.com",
+  projectId: "brandland-fe63e",
+  storageBucket: "brandland-fe63e.firebasestorage.app",
+  messagingSenderId: "119294456074",
+  appId: "1:119294456074:web:51af845d725776aa924af3"
+};
+
+// تهيئة Firebase فوراً
+let auth = null;
+try {
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  auth = firebase.auth();
+  console.log('✅ Firebase ready');
+} catch(e) {
+  console.error('❌ Firebase error:', e);
+}
+
+// ===== عند تحميل الصفحة =====
 document.addEventListener('DOMContentLoaded', function(){
   
-  // إذا كان مسجل الدخول بالفعل، انتقل للوحة
-  if(typeof isLoggedIn === 'function' && isLoggedIn()){
+  // إذا كان مسجل الدخول، انتقل للوحة
+  if(localStorage.getItem('brandland_logged_in') === 'true'){
     window.location.href = 'dashboard.html';
     return;
   }
 
   const form = document.getElementById('loginForm');
   const errorBox = document.getElementById('errorBox');
+  const loadingBox = document.getElementById('loadingBox');
   const submitBtn = document.getElementById('submitBtn');
+
+  // تأكد أن Firebase جاهز
+  if(!auth){
+    loadingBox.textContent = '⚠️ فشل تحميل Firebase - أعد تحميل الصفحة';
+    loadingBox.style.display = 'block';
+  }
 
   form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -70,37 +108,70 @@ document.addEventListener('DOMContentLoaded', function(){
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
+    // إخفاء الرسائل السابقة
     errorBox.style.display = 'none';
+    loadingBox.style.display = 'none';
+
+    if(!auth){
+      errorBox.textContent = '⚠️ Firebase غير محمّل - أعد تحميل الصفحة';
+      errorBox.style.display = 'block';
+      return;
+    }
+
+    // تعطيل الزر
     submitBtn.disabled = true;
     submitBtn.textContent = '⏳ جاري التحقق...';
+    loadingBox.style.display = 'block';
 
-    // استدعاء دالة login من admin.js
-    if(typeof login === 'function'){
-      login(email, password).then(result => {
+    // تسجيل الدخول
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // نجاح
+        localStorage.setItem('brandland_logged_in', 'true');
+        localStorage.setItem('brandland_user_email', userCredential.user.email);
+        
+        submitBtn.textContent = '✅ نجح! جاري التحويل...';
+        loadingBox.textContent = '✅ تم تسجيل الدخول بنجاح';
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 800);
+      })
+      .catch((error) => {
+        // فشل
         submitBtn.disabled = false;
         submitBtn.textContent = '🚀 تسجيل الدخول';
+        loadingBox.style.display = 'none';
 
-        if(result.success){
-          if(typeof showToast === 'function'){
-            showToast('✅ مرحباً بك!');
-          }
-          setTimeout(() => {
-            window.location.href = 'dashboard.html';
-          }, 500);
-        } else {
-          errorBox.style.display = 'block';
-          document.getElementById('password').value = '';
+        // رسالة الخطأ حسب نوعه
+        let msg = '⚠️ ';
+        switch(error.code){
+          case 'auth/invalid-email':
+            msg += 'البريد الإلكتروني غير صالح';
+            break;
+          case 'auth/user-not-found':
+            msg += 'المستخدم غير موجود';
+            break;
+          case 'auth/wrong-password':
+            msg += 'كلمة المرور غير صحيحة';
+            break;
+          case 'auth/invalid-credential':
+            msg += 'البريد أو كلمة المرور غير صحيحة';
+            break;
+          case 'auth/too-many-requests':
+            msg += 'تم تجاوز عدد المحاولات - حاول لاحقاً';
+            break;
+          case 'auth/network-request-failed':
+            msg += 'فشل الاتصال بالإنترنت';
+            break;
+          default:
+            msg += 'البريد أو كلمة المرور غير صحيحة';
         }
-      }).catch(err => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = '🚀 تسجيل الدخول';
+
+        errorBox.textContent = msg;
         errorBox.style.display = 'block';
+        document.getElementById('password').value = '';
       });
-    } else {
-      submitBtn.disabled = false;
-      submitBtn.textContent = '🚀 تسجيل الدخول';
-      errorBox.style.display = 'block';
-    }
   });
 
 });

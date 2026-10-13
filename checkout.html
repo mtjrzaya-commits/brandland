@@ -66,9 +66,27 @@
       <textarea id="customerNotes" placeholder="أي تعليمات إضافية؟"></textarea>
     </div>
 
+    <h2>💳 طريقة الدفع</h2>
+
+    <div style="background:linear-gradient(180deg, #1a0808 0%, #0a0a0a 100%);border:1.5px solid rgba(255,46,58,0.3);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="color:var(--red-bright);font-size:20px;">💳</span>
+        <span>بطاقة ائتمانية</span>
+      </div>
+      <span style="color:var(--red-bright);">›</span>
+    </div>
+
+    <div style="background:linear-gradient(180deg, #1a0808 0%, #0a0a0a 100%);border:1.5px solid rgba(255,46,58,0.5);border-radius:12px;padding:15px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="color:var(--red-bright);font-size:20px;">💵</span>
+        <span>الدفع عند الاستلام</span>
+      </div>
+      <span style="color:var(--red-bright);">✓</span>
+    </div>
+
     <button type="submit" class="whatsapp-btn">
-      <span>💬</span>
-      <span>تأكيد الطلب عبر واتساب</span>
+      <span>✅</span>
+      <span>تأكيد الطلب</span>
     </button>
 
     <p style="color:var(--muted);font-size:12px;text-align:center;margin-top:15px;line-height:1.7;">
@@ -114,13 +132,13 @@ function renderOrderSummary(){
     total += item.price * item.qty;
     return `
       <div class="order-item">
-        <img src="${item.image || 'https://via.placeholder.com/50x50/D4AF37/000000?text=P'}" 
-             onerror="this.src='https://via.placeholder.com/50x50/D4AF37/000000?text=P'">
+        <img src="${item.image || 'https://via.placeholder.com/50x50/8B0000/FFFFFF?text=P'}" 
+             onerror="this.src='https://via.placeholder.com/50x50/8B0000/FFFFFF?text=P'">
         <div class="order-item-info">
           <h4>${item.name}</h4>
           <div class="qty">الكمية: ${item.qty}</div>
         </div>
-        <div class="order-item-price">${item.price * item.qty} SAR</div>
+        <div class="order-item-price">$${item.price * item.qty}</div>
       </div>
     `;
   }).join('');
@@ -128,9 +146,9 @@ function renderOrderSummary(){
   container.innerHTML = `
     <h3>🛒 ملخص الطلب</h3>
     ${items}
-    <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:2px solid var(--gold);margin-top:10px;">
+    <div style="display:flex;justify-content:space-between;padding-top:12px;border-top:2px solid var(--red-bright);margin-top:10px;">
       <span style="color:var(--text);font-weight:700;">المجموع الكلي</span>
-      <span style="color:var(--gold-bright);font-weight:900;font-size:18px;">${total} SAR</span>
+      <span style="color:var(--red-bright);font-weight:900;font-size:18px;">$${total}</span>
     </div>
   `;
 }
@@ -159,18 +177,13 @@ function handleOrderSubmit(e){
     date: new Date().toISOString()
   };
 
-  // حفظ الطلب
   const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
   orders.push(order);
   localStorage.setItem('brandland_orders', JSON.stringify(orders));
 
-  // إرسال إلى واتساب
   sendToWhatsApp(order);
-
-  // إرسال البريد
   sendEmailNotification(order);
 
-  // تفريغ السلة
   localStorage.removeItem('brandland_cart');
   if(typeof updateCartCount === 'function') updateCartCount();
 
@@ -184,7 +197,7 @@ function handleOrderSubmit(e){
 function generateOrderNumber(){
   const orders = JSON.parse(localStorage.getItem('brandland_orders') || '[]');
   const nextNumber = orders.length;
-  return 'BL' + String(nextNumber).padStart(4, '0');
+  return 'BL' + String(nextNumber).padStart(6, '0');
 }
 
 function sendToWhatsApp(order){
@@ -208,10 +221,10 @@ function sendToWhatsApp(order){
   message += `🛒 *المنتجات:*\n`;
   order.items.forEach((item, index) => {
     message += `${index + 1}. ${item.name}\n`;
-    message += `   الكمية: ${item.qty} × ${item.price} SAR = ${item.qty * item.price} SAR\n`;
+    message += `   الكمية: ${item.qty} × $${item.price} = $${item.qty * item.price}\n`;
   });
   
-  message += `\n💰 *المجموع الكلي:* ${order.total} SAR\n\n`;
+  message += `\n💰 *المجموع الكلي:* $${order.total}\n\n`;
   message += `━━━━━━━━━━━━━━━━\n`;
   message += `شكراً لثقتك في BRAND LAND 👑`;
 
@@ -229,31 +242,17 @@ function sendEmailNotification(order){
   body += `════════════════════\n\n`;
   body += `📋 رقم الطلب: ${order.orderNumber}\n`;
   body += `📅 التاريخ: ${new Date(order.date).toLocaleString('ar-SA')}\n\n`;
-  
   body += `👤 معلومات العميل:\n`;
-  body += `━━━━━━━━━━━━━━━\n`;
   body += `الاسم: ${order.customerName}\n`;
   body += `الجوال: ${order.customerPhone}\n`;
   body += `المدينة: ${order.city}\n`;
   body += `الحي: ${order.district}\n`;
-  body += `العنوان: ${order.address}\n`;
-  if(order.notes) body += `ملاحظات: ${order.notes}\n`;
-  body += `\n`;
-
+  body += `العنوان: ${order.address}\n\n`;
   body += `🛒 المنتجات:\n`;
-  body += `━━━━━━━━━━━━━━━\n`;
   order.items.forEach((item, index) => {
-    body += `${index + 1}. ${item.name}\n`;
-    body += `   الكمية: ${item.qty}\n`;
-    body += `   السعر: ${item.price} SAR\n`;
-    body += `   الإجمالي: ${item.qty * item.price} SAR\n`;
-    if(item.image) body += `   صورة: ${item.image}\n`;
-    body += `\n`;
+    body += `${index + 1}. ${item.name} × ${item.qty} = $${item.qty * item.price}\n`;
   });
-  
-  body += `💰 المجموع الكلي: ${order.total} SAR\n\n`;
-  body += `════════════════════\n`;
-  body += `BRAND LAND - متجر إلكتروني\n`;
+  body += `\n💰 المجموع الكلي: $${order.total}\n`;
 
   const mailtoUrl = `mailto:${storeEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   

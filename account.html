@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حسابي | BRAND LAND</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+<header>
+  <div class="header-left">
+    <button class="icon-btn" onclick="location.href='index.html'">←</button>
+  </div>
+  <div class="logo-center">
+    <span class="crown">👑</span>
+    <span class="logo-text">BRAND LAND</span>
+  </div>
+  <div class="header-right">
+    <a href="cart.html">
+      <button class="icon-btn">
+        🛒
+        <span class="cart-count-badge cart-count">0</span>
+      </button>
+    </a>
+  </div>
+</header>
+
+<div class="account-page">
+  
+  <div class="account-header">
+    <div class="account-avatar">👤</div>
+    <h2>مرحباً بك</h2>
+    <p>سجّل دخولك للاستفادة من كل الميزات</p>
+  </div>
+
+  <div class="account-menu">
+    
+    <a href="cart.html">
+      <span>
+        <span class="menu-icon">📦</span>
+        <span>طلباتي</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="#">
+      <span>
+        <span class="menu-icon">📍</span>
+        <span>عناويني للشحن</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="#">
+      <span>
+        <span class="menu-icon">💳</span>
+        <span>طرق الدفع</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="cart.html">
+      <span>
+        <span class="menu-icon">♡</span>
+        <span>المفضلة</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="#">
+      <span>
+        <span class="menu-icon">🔔</span>
+        <span>الإشعارات</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="mailto:mtjrzaya@gmail.com">
+      <span>
+        <span class="menu-icon">🎧</span>
+        <span>تواصل معنا</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+    <a href="#" class="logout" onclick="confirmLogout(); return false;">
+      <span>
+        <span class="menu-icon">🚪</span>
+        <span>تسجيل الخروج</span>
+      </span>
+      <span class="arrow">‹</span>
+    </a>
+
+  </div>
+
+  <div style="text-align:center;margin-top:30px;">
+    <p style="color:var(--muted);font-size:12px;">© 2026 BRAND LAND</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="logo-small">👑 BRAND LAND</div>
+  <p>📧 <a href="mailto:mtjrzaya@gmail.com">mtjrzaya@gmail.com</a></p>
+</footer>
+
+<nav class="bottom-nav">
+  <a href="index.html">
+    <span class="nav-icon">🏠</span>
+    <span>الرئيسية</span>
+  </a>
+  <a href="categories.html">
+    <span class="nav-icon">⊞</span>
+    <span>الأقسام</span>
+  </a>
+  <a href="cart.html">
+    <span class="nav-icon">♡</span>
+    <span>المفضلة</span>
+  </a>
+  <a href="account.html" class="active">
+    <span class="nav-icon">👤</span>
+    <span>حسابي</span>
+  </a>
+</nav>
+
+<script src="script.js"></script>
+<script>
+function confirmLogout(){
+  if(confirm('هل تريد تسجيل الخروج؟')){
+    if(typeof showToast === 'function'){
+      showToast('👋 تم تسجيل الخروج');
+    }
+  }
+}
+</script>
+
+</body>
+  </html>
